@@ -3,13 +3,14 @@ import ForceGraph2D from 'react-force-graph-2d';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { Network } from 'lucide-react';
+import API_BASE_URL from '../api_config';
 
 const NetworkGraph = memo(() => {
   const [data, setData] = useState({ nodes: [], links: [] });
   const graphRef = useRef();
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8001/api/agent/graph-data')
+    axios.get(`${API_BASE_URL}/api/agent/graph-data`)
       .then(res => {
         setData(res.data);
       })

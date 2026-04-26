@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Newspaper } from 'lucide-react';
+import API_BASE_URL from '../api_config';
 
 export default function LiveTicker() {
   const [news, setNews] = useState([]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8001/api/bills/news/feed')
+    axios.get(`${API_BASE_URL}/api/bills/news/feed`)
       .then(res => {
         if (res.data.status === 'success') {
           setNews(res.data.articles);

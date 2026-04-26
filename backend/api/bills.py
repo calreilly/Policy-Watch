@@ -6,6 +6,7 @@ from models.schemas import BillListResponse, BillDetail
 from models.database import Bill
 from main_db_dependency import get_db
 from services.congress_service import CongressService
+from services.logging_service import log_error
 
 router = APIRouter()
 
@@ -84,7 +85,7 @@ def get_bill_detail(bill_id: str, db: Session = Depends(get_db)):
         similar = rag.retrieve_relevant_bills(str(bill.title), top_k=4)
         related_bills = [s.get("bill_id") for s in similar if s.get("bill_id") and s.get("bill_id") != bill.id][:3]
     except Exception as e:
-        print(f"RAG query failed for modal {e}")
+        log_error(str(e), context="BillModal/RAG")
 
     # Fallback to empty states if actual extraction limit breaks during demo
     if not sponsors and not votes:
@@ -113,5 +114,5 @@ def get_live_news():
             results = list(ddgs.text("Congress legislation news \"bill\"", max_results=5))
             return {"status": "success", "articles": results}
     except Exception as e:
-        logging.error(f"Live News Error: {e}")
+        log_error(str(e), context="LiveNewsFeed")
         return {"status": "error", "articles": []}

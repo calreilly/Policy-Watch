@@ -3,6 +3,7 @@ import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Bot, User } from 'lucide-react';
 import MarkdownIt from 'markdown-it';
+import API_BASE_URL from '../api_config';
 
 const mdParser = new MarkdownIt();
 
@@ -32,7 +33,7 @@ export default function ChatBot() {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://127.0.0.1:8001/api/agent/quick-chat', { query: userMessage.content });
+      const response = await axios.post(`${API_BASE_URL}/api/agent/quick-chat`, { query: userMessage.content });
       setMessages(prev => [...prev, { role: 'system', content: response.data.reply }]);
     } catch (err) {
       console.error("Chat error", err);

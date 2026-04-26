@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Bot, Sparkles, Network, Globe } from 'lucide-react';
 import PipelineViz from '../components/PipelineViz';
 import TrustScore from '../components/TrustScore';
+import API_BASE_URL from '../api_config';
 
 const mdParser = new MarkdownIt();
 
@@ -23,7 +24,7 @@ export default function BriefGenerator() {
     setScore(0);
     
     // Switch to Native Server-Sent Events (SSE)
-    const eventSource = new EventSource(`http://127.0.0.1:8001/api/agent/stream-brief?query=${encodeURIComponent(query)}`);
+    const eventSource = new EventSource(`${API_BASE_URL}/api/agent/stream-brief?query=${encodeURIComponent(query)}`);
     
     eventSource.addEventListener('reasoning', (e) => {
         const stepData = JSON.parse(e.data);

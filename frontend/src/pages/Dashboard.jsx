@@ -5,6 +5,7 @@ import { RefreshCw, Zap } from 'lucide-react';
 import NetworkGraph from '../components/NetworkGraph';
 import LiveTicker from '../components/LiveTicker';
 import BillModal from '../components/BillModal';
+import API_BASE_URL from '../api_config';
 
 export default function Dashboard() {
   const [bills, setBills] = useState([]);
@@ -14,7 +15,7 @@ export default function Dashboard() {
 
   const fetchBills = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8001/api/bills/today');
+      const response = await axios.get(`${API_BASE_URL}/api/bills/today`);
       setBills(response.data.bills || []);
     } catch (err) {
       console.error("Dashboard err", err);
@@ -26,7 +27,7 @@ export default function Dashboard() {
   const handleRefresh = async () => {
     setRefreshing(true);
     try {
-      const res = await axios.post('http://127.0.0.1:8001/api/bills/refresh');
+      const res = await axios.post(`${API_BASE_URL}/api/bills/refresh`);
       if (res.data.new > 0 || res.data.updated > 0) {
           alert(`Success: Synced ${res.data.new} new bills and updated ${res.data.updated} records!`);
       } else {

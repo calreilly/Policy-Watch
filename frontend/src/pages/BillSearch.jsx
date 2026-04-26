@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import BillCard from '../components/BillCard';
 import { SearchIcon, Loader2 } from 'lucide-react';
+import API_BASE_URL from '../api_config';
 
 export default function BillSearch() {
   const [query, setQuery] = useState('');
@@ -15,7 +16,7 @@ export default function BillSearch() {
     setLoading(true);
     setSearched(true);
     try {
-      const response = await axios.get(`http://127.0.0.1:8001/api/bills/search?q=${encodeURIComponent(query)}`);
+      const response = await axios.get(`${API_BASE_URL}/api/bills/search?q=${encodeURIComponent(query)}`);
       setBills(response.data.bills || []);
     } catch (err) {
       console.error(err);

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Users, Activity, ExternalLink, Network, CheckCircle, XCircle } from 'lucide-react';
+import API_BASE_URL from '../api_config';
 
 export default function BillModal({ billId, onClose }) {
   const [detail, setDetail] = useState(null);
@@ -10,7 +11,7 @@ export default function BillModal({ billId, onClose }) {
   useEffect(() => {
     if (!billId) return;
     setLoading(true);
-    axios.get(`http://127.0.0.1:8001/api/bills/${billId}`)
+    axios.get(`${API_BASE_URL}/api/bills/${billId}`)
       .then(res => {
         setDetail(res.data);
         setLoading(false);

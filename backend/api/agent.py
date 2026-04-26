@@ -11,6 +11,7 @@ from models.database import GeneratedBrief, PipelineTrace
 from services.agent_service import AgentService
 from services.congress_service import CongressService
 from services.rag_service import RAGService
+from services.logging_service import log_error, get_recent_errors
 
 router = APIRouter()
 
@@ -20,7 +21,11 @@ agent_service = AgentService(congress_service, rag_service)
 
 @router.post("/generate-brief", response_model=BriefResponse)
 def generate_brief(request: BriefRequest, db: Session = Depends(get_db)):
-    result_state = agent_service.generate_brief(request.query, getattr(request, "db_session", db))
+    try:
+        result_state = agent_service.generate_brief(request.query, getattr(request, "db_session", db))
+    except Exception as e:
+        log_error(str(e), context="GenerateBrief")
+        raise HTTPException(status_code=500, detail=str(e))
     
     traces = []
     for t in result_state.get("pipeline_trace", []):
@@ -68,8 +73,12 @@ class ChatRequest(BaseModel):
 @router.post("/quick-chat")
 def quick_chat(request: ChatRequest, db: Session = Depends(get_db)):
     """Fast secondary RAG pipeline isolated exclusively for ChatBot interface"""
-    reply = agent_service.quick_chat(request.query)
-    return {"reply": reply}
+    try:
+        reply = agent_service.quick_chat(request.query)
+        return {"reply": reply}
+    except Exception as e:
+        log_error(str(e), context="QuickChat")
+        return {"reply": f"*Error: {str(e)}*"}
 
 @router.get("/graph-data")
 def get_graph_data(db: Session = Depends(get_db)):
@@ -120,3 +129,8 @@ def get_graph_data(db: Session = Depends(get_db)):
     
     return {"nodes": nodes, "links": links}
 
+@router.get("/error-log")
+def get_error_log():
+    """Returns the most recent errors from the persistent log file for debugging."""
+    errors = get_recent_errors(limit=50)
+    return {"errors": errors, "count": len(errors)}

@@ -192,7 +192,7 @@ class AgentService:
 
     def quick_chat(self, query: str) -> str:
         """Fast RAG bypassing the comprehensive LangGraph sequence"""
-        relevant_docs = self.rag_service.retrieve_relevant_bills(query, top_k=3)
+        relevant_docs = self.rag.retrieve_relevant_bills(query, top_k=3)
         context = ""
         for d in relevant_docs:
             context += f"Bill ID: {d.get('bill_id')} - Title: {d.get('title')}\n"

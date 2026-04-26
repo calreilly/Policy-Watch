@@ -15,7 +15,7 @@ from models.database import Bill
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Recreate tables fresh on every boot so we always pull current data
-    Base.metadata.drop_all(bind=engine)
+    # Base.metadata.drop_all(bind=engine) # DISABLED: Preventing data wipe on every boot
     Base.metadata.create_all(bind=engine)
     
     db = SessionLocal()
