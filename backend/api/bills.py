@@ -61,9 +61,16 @@ def search_bills(q: str, db: Session = Depends(get_db)):
 def refresh_bills(db: Session = Depends(get_db)):
     """On-demand endpoint to pull the latest bills from Congress.gov right now."""
     result = CongressService.seed_database(db)
-    if not result.get("success"):
-        raise HTTPException(status_code=429, detail=result.get("error", "Rate limit exceeded"))
     count = db.query(Bill).count()
+    if not result.get("success"):
+        # Don't fail hard — return current cached data with a warning flag
+        return {
+            "status": "rate_limited",
+            "message": "Congress.gov rate limit reached. Showing cached data.",
+            "total_bills": count,
+            "new": 0,
+            "updated": 0
+        }
     return {"status": "refreshed", "total_bills": count, "new": result.get("new"), "updated": result.get("updated")}
 
 @router.get("/{bill_id}", response_model=BillDetail)
@@ -107,12 +114,11 @@ def get_bill_detail(bill_id: str, db: Session = Depends(get_db)):
 @router.get("/news/feed")
 def get_live_news():
     """DuckDuckGo scraper wrapper strictly for breaking dashboard news feeds"""
-    from duckduckgo_search import DDGS
-    import logging
+    from ddgs import DDGS
     try:
-        with DDGS() as ddgs:
-            results = list(ddgs.text("Congress legislation news \"bill\"", max_results=5))
-            return {"status": "success", "articles": results}
+        d = DDGS()
+        results = list(d.text('US Congress legislation bill 2025', max_results=6))
+        return {"status": "success", "articles": results}
     except Exception as e:
         log_error(str(e), context="LiveNewsFeed")
         return {"status": "error", "articles": []}

@@ -6,7 +6,7 @@ from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage
-from duckduckgo_search import DDGS
+from ddgs import DDGS
 import networkx as nx
 from services.congress_service import CongressService
 from services.rag_service import RAGService

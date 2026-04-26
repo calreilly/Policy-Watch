@@ -28,18 +28,18 @@ export default function Dashboard() {
     setRefreshing(true);
     try {
       const res = await axios.post(`${API_BASE_URL}/api/bills/refresh`);
-      if (res.data.new > 0 || res.data.updated > 0) {
-          alert(`Success: Synced ${res.data.new} new bills and updated ${res.data.updated} records!`);
+      if (res.data.status === 'rate_limited') {
+        alert(`⚠️ Congress.gov is rate-limited right now. Showing ${res.data.total_bills} cached bills.`);
+      } else if (res.data.new > 0 || res.data.updated > 0) {
+        alert(`✅ Synced ${res.data.new} new bills and updated ${res.data.updated} existing records!`);
       } else {
-          alert("Database already globally up-to-date with current Congress events.");
+        alert(`ℹ️ Database is already up-to-date (${res.data.total_bills} bills).`);
       }
+      // Always re-fetch so the grid refreshes with what we have
       await fetchBills();
     } catch (err) {
-      if (err.response && err.response.status === 429) {
-          alert("Congress.gov API Rate Limit Reached! Cannot sync new bills right now. Try again later.");
-      } else {
-          console.error("Refresh err", err);
-      }
+      console.error("Refresh err", err);
+      alert("Failed to contact the backend. Is the server running?");
     } finally {
       setRefreshing(false);
     }
