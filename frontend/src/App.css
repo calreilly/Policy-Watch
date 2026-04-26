@@ -1,0 +1,7 @@
+/* Specialized App CSS for animations and layout adjustments not covered by index.css */
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.4s ease-out;
+}

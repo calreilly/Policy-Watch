@@ -21,3 +21,10 @@ venv/
 # Antigravity/Agent
 .gemini/
 .agent/
+
+# Project Specific
+*.pth
+*.db
+chromadb_data/
+memory_db/
+distillation_dataset.jsonl

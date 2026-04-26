@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: policywatch_api
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./backend:/app
+      # Map .env so OpenAI keys pass through
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: policywatch_ui
+    ports:
+      - "5175:5175"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_TIMEOUT=15000
+    restart: unless-stopped

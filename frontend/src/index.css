@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-textMain min-h-screen;
+    font-family: 'Inter', sans-serif;
+    background-image: 
+      radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.08), transparent 30%),
+      radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.08), transparent 30%);
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-panel backdrop-blur-md border border-border rounded-2xl shadow-xl transition-all duration-300;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-secondary text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none select-none;
+  }
+
+  .input-styled {
+    @apply w-full bg-black/30 border border-border text-white px-5 py-4 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300;
+  }
+}
+
+/* Custom Markdown formatting */
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+  @apply text-white font-bold mb-4 mt-6;
+}
+.markdown-body h1 { @apply text-2xl border-b border-border pb-2; }
+.markdown-body h2 { @apply text-xl text-primary; }
+.markdown-body p { @apply text-textMuted mb-4 leading-relaxed; }
+.markdown-body ul { @apply list-disc list-inside text-textMuted mb-4 space-y-2; }
+.markdown-body li { @apply leading-relaxed; }
