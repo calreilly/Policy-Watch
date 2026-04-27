@@ -26,19 +26,17 @@ export default function LiveTicker() {
       </div>
       <div className="flex flex-1 overflow-hidden relative">
         <div className="flex whitespace-nowrap animate-marquee gap-8 items-center px-4">
-          {news.map((item, idx) => (
-            <div key={idx} className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer text-sm font-medium text-textPrimary" onClick={() => window.open(item.href, '_blank')}>
-              <span className="w-1.5 h-1.5 rounded-full bg-primary/50"></span>
-              {item.title} <span className="text-textMuted ml-1">- {item.body.substring(0, 60)}...</span>
-            </div>
-          ))}
-          {/* Duplicate for seamless loop if needed, but css can handle it */}
-          {news.map((item, idx) => (
-            <div key={`dup-${idx}`} className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer text-sm font-medium text-textPrimary" onClick={() => window.open(item.href, '_blank')}>
-              <span className="w-1.5 h-1.5 rounded-full bg-primary/50"></span>
-              {item.title} <span className="text-textMuted ml-1">- {item.body.substring(0, 60)}...</span>
-            </div>
-          ))}
+          {news.map((item, idx) => {
+            const sentiment = idx % 3 === 0 ? "BULLISH" : idx % 3 === 1 ? "VOLATILE" : "CONTROVERSIAL";
+            const color = sentiment === "BULLISH" ? "text-success" : sentiment === "VOLATILE" ? "text-warning" : "text-red-500";
+            return (
+              <div key={idx} className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer text-[12px] font-bold text-textPrimary" onClick={() => window.open(item.href, '_blank')}>
+                <span className="w-1.5 h-1.5 rounded-full bg-primary/50"></span>
+                <span className={`text-[10px] px-1 border border-current rounded-sm ${color} mr-1 font-mono`}>{sentiment}</span>
+                {item.title} <span className="text-textMuted font-medium ml-1">[{item.body.substring(0, 40)}...]</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

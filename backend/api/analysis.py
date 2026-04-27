@@ -75,3 +75,22 @@ async def get_lobbying_influence(bill_id: str, db: Session = Depends(get_db)):
         
     influence = LobbyingService.get_industry_influence(cand["candidate_id"])
     return {"status": "success", "influence": influence}
+
+@router.post("/prognosis/{bill_id}")
+async def get_passage_prognosis(bill_id: str, db: Session = Depends(get_db)):
+    """Generate a predictive passage prognosis for a specific bill."""
+    bill = db.query(Bill).filter(Bill.id == bill_id).first()
+    if not bill:
+        raise HTTPException(status_code=404, detail="Bill not found")
+        
+    from services.prediction_service import PredictionService
+    
+    # Prepare bill data for service
+    bill_data = {
+        "title": bill.title,
+        "summary": bill.summary,
+        "sponsors": [{"party": s.party, "is_lead": s.is_lead} for s in bill.sponsors]
+    }
+    
+    prognosis = PredictionService.calculate_prognosis(bill_data)
+    return {"status": "success", "prognosis": prognosis}

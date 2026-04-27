@@ -12,6 +12,7 @@ export default function BillModal({ billId, onClose }) {
   const [pulse, setPulse] = useState(null);
   const [alignment, setAlignment] = useState(null);
   const [influence, setInfluence] = useState(null);
+  const [activeTab, setActiveTab] = useState("overview"); 
   const [generatingReport, setGeneratingReport] = useState(false);
   const [loadingPulse, setLoadingPulse] = useState(false);
   const [loadingAlignment, setLoadingAlignment] = useState(false);
@@ -124,290 +125,213 @@ export default function BillModal({ billId, onClose }) {
                   </button>
                 </div>
 
-                <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
-                    {/* Left Column */}
-                    <div className="space-y-6">
-                      <div className="glass-panel p-5 rounded-xl border border-white/5 bg-white/5">
-                        <h3 className="text-xs uppercase tracking-widest text-textMuted font-bold mb-4 flex items-center gap-2">
-                          <Activity size={14} /> Legislative Trajectory
-                        </h3>
-                        <div className="relative pl-4 border-l-2 border-primary/30 space-y-4">
-                           <div className="relative">
-                             <div className="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-primary ring-4 ring-[#12121c]"></div>
-                             <p className="text-sm font-bold text-white">{detail.latest_action || "Introduced"}</p>
-                             <p className="text-xs text-textMuted">{detail.introduced_date}</p>
-                           </div>
-                        </div>
-                      </div>
-
-                      <div className="glass-panel p-5 rounded-xl border border-white/5 bg-white/5">
-                        <h3 className="text-xs uppercase tracking-widest text-textMuted font-bold mb-4 flex items-center gap-2">
-                          <Network size={14} /> Agent Similarity Matrix
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                          {(detail.related_bills || []).map((rb, idx) => (
-                             <span key={idx} className="px-3 py-1 bg-secondary/10 border border-secondary/20 text-secondary text-xs rounded-full font-medium">
-                               {rb}
-                             </span>
+                <div className="flex-1 overflow-y-auto custom-scrollbar">
+                    <div className="p-8 space-y-10 focus:outline-none">
+                      
+                      {/* Intelligence Matrix Navigation */}
+                      <div className="flex items-center justify-between border-b border-white/5 pb-6">
+                        <div className="flex gap-2 bg-black/60 p-1 rounded-full border border-white/10 backdrop-blur-md">
+                          {["overview", "intelligence", "analysis"].map(tab => (
+                            <button
+                              key={tab}
+                              onClick={() => setActiveTab(tab)}
+                              className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
+                                activeTab === tab ? 'bg-primary text-black shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]' : 'text-textMuted hover:text-white'
+                              }`}
+                            >
+                              {tab}
+                            </button>
                           ))}
                         </div>
-                      </div>
-
-                      <div className="glass-panel p-5 rounded-xl border border-[#4ade80]/20 bg-[#4ade80]/5">
-                        <h3 className="text-xs uppercase tracking-widest text-[#4ade80] font-bold mb-4 flex items-center gap-2">
-                          <Globe size={14} /> Global Policy Alignment
-                        </h3>
-                        {loadingAlignment ? (
-                          <div className="flex items-center gap-2 text-[10px] text-textMuted py-4">
-                            <div className="w-3 h-3 border-2 border-[#4ade80] border-t-transparent rounded-full animate-spin"></div>
-                            Benchmarking against International Standards...
-                          </div>
-                        ) : alignment ? (
-                          <div className="space-y-3">
-                            <div className="flex justify-between items-center mb-1">
-                              <span className="text-[10px] text-textMuted uppercase">Reg. Match:</span>
-                              <span className="text-[10px] font-bold text-[#4ade80]">{alignment.standard}</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                                <motion.div 
-                                  initial={{ width: 0 }}
-                                  animate={{ width: `${alignment.alignment_score * 100}%` }}
-                                  className="h-full bg-[#4ade80]"
-                                />
-                              </div>
-                              <span className="text-[10px] font-mono text-white">{Math.round(alignment.alignment_score * 100)}%</span>
-                            </div>
-                            <p className="text-[10px] text-textMuted leading-relaxed bg-black/20 p-2 rounded border border-white/5 line-clamp-3">
-                              {alignment.context}
-                            </p>
-                          </div>
-                        ) : (
-                          <p className="text-xs text-textMuted italic">Global cross-referencing offline.</p>
-                        )}
-                      </div>
-
-                      <div className="glass-panel p-5 rounded-xl border border-primary/20 bg-primary/5">
-                        <h3 className="text-xs uppercase tracking-widest text-primary font-bold mb-4 flex items-center gap-2">
-                          <Sparkles size={14} /> Automated Impact Analysis (ARIS)
-                        </h3>
-                        {report ? (
-                          <div className="prose prose-invert prose-xs max-h-64 overflow-y-auto custom-scrollbar bg-black/20 p-4 rounded-lg border border-white/5">
-                            <div className="text-[11px] text-textMain whitespace-pre-wrap leading-relaxed">
-                              {report}
-                            </div>
-                          </div>
-                        ) : (
-                          <button 
-                            onClick={generateAIReport}
-                            disabled={generatingReport}
-                            className="w-full py-3 bg-primary/20 border border-primary/30 text-primary text-xs font-bold uppercase rounded-lg hover:bg-primary/30 transition-all flex items-center justify-center gap-2"
-                          >
-                            {generatingReport ? (
-                              <><span className="w-4 h-4 border-2 border-primary border-t-white rounded-full animate-spin"></span> Processing Matrix...</>
-                            ) : (
-                              <><Sparkles size={14} /> Generate Deep Intelligence Report</>
-                            )}
-                          </button>
-                        )}
-                        <p className="text-[9px] text-textMuted mt-3 uppercase tracking-tighter text-center">
-                          Powered by PolicyWatch ARIS Agentic Reasoning
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Right Column */}
-                    <div className="space-y-6">
-                      <div className="glass-panel p-5 rounded-xl border border-white/5 bg-white/5">
-                        <h3 className="text-xs uppercase tracking-widest text-textMuted font-bold mb-4 flex items-center gap-2">
-                          <Users size={14} /> Intelligence: Sponsors
-                        </h3>
-                        <div className="space-y-3">
-                          {(detail.sponsors || []).map((s, idx) => (
-                            <div key={idx} className="flex justify-between items-center bg-[#0d0d14] p-3 rounded-lg border border-white/5">
-                              <span className="text-sm text-white font-medium">{s.member_name}</span>
-                              <span className={`text-xs px-2 py-0.5 rounded font-bold ${s.party === 'D' ? 'bg-blue-500/20 text-blue-400' : 'bg-red-500/20 text-red-400'}`}>
-                                {s.party}-{s.state}
-                              </span>
-                            </div>
-                          ))}
+                        <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-success/20 bg-success/5">
+                           <span className="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+                           <span className="text-[9px] font-black text-success uppercase tracking-widest">Autonomous Sync Active</span>
                         </div>
                       </div>
 
-                      {detail.finance && (
-                        <div className="glass-panel p-5 rounded-xl border border-white/5 bg-[#1a1a2e]/50">
-                          <h3 className="text-xs uppercase tracking-widest text-[#f87171] font-bold mb-4 flex items-center gap-2">
-                            <Zap size={14} /> Transparency: Campaign Finance
-                          </h3>
-                          <div className="space-y-4">
-                            <div className="grid grid-cols-2 gap-3">
-                              <div className="bg-black/40 p-3 rounded-lg border border-white/5">
-                                <p className="text-[10px] text-textMuted uppercase font-bold mb-1">Total Raised</p>
-                                <p className="text-lg font-bold text-white">${detail.finance.total_raised.toLocaleString()}</p>
-                              </div>
-                              <div className="bg-black/40 p-3 rounded-lg border border-white/5">
-                                <p className="text-[10px] text-textMuted uppercase font-bold mb-1">Total Spent</p>
-                                <p className="text-lg font-bold text-white">${detail.finance.total_spent.toLocaleString()}</p>
-                              </div>
-                            </div>
-                            <div className="bg-black/40 p-3 rounded-lg border border-white/5 flex justify-between items-center">
-                              <div>
-                                <p className="text-[10px] text-textMuted uppercase font-bold">Cash on Hand</p>
-                                <p className="text-md font-bold text-success">${detail.finance.cash_on_hand.toLocaleString()}</p>
-                              </div>
-                              <button 
-                                onClick={() => window.open(detail.finance.fec_url, '_blank')}
-                                className="text-[10px] font-bold text-primary hover:underline"
-                              >
-                                VIEW FEC FILINGS
-                              </button>
-                            </div>
-                            <p className="text-[10px] text-textMuted italic leading-tight">
-                              Financial telemetry sourced from OpenFEC. Data represents the current 2024 election cycle.
-                            </p>
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="glass-panel p-5 rounded-xl border border-white/5 bg-white/5">
-                        <h3 className="text-xs uppercase tracking-widest text-textMuted font-bold mb-4 flex items-center gap-2">
-                          <Activity size={14} className="text-secondary" /> GovTrack Intelligence
-                        </h3>
-                        {govtrack ? (
-                           <div className="bg-[#0d0d14] p-3 rounded-lg border border-white/5">
-                              <div className="flex justify-between items-center mb-1">
-                                <span className="text-xs text-textMuted uppercase">Passage Prognosis:</span>
-                                <span className="text-xs font-bold text-secondary">
-                                  {(govtrack.current_prognosis === 'high' || govtrack.current_prognosis === 'very_high') ? 'PROBABLE' : 'UNLIKELY'}
-                                </span>
-                              </div>
-                              <p className="text-[10px] text-textMuted leading-relaxed">
-                                {govtrack.is_alive ? "This bill is active. GovTrack calculates probability based on historical patterns." : "This session has concluded."}
+                      {activeTab === "overview" && (
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                          <div className="lg:col-span-2 space-y-10">
+                            <div className="group">
+                              <h3 className="text-[10px] uppercase tracking-[0.2em] text-primary font-black mb-4 flex items-center gap-2">
+                                <Activity size={14} /> Legislative Synthesis
+                              </h3>
+                              <p className="text-white text-xl leading-relaxed font-semibold tracking-tight">
+                                {detail.summary || "Agentic synthesis in progress..."}
                               </p>
-                           </div>
-                        ) : (
-                          <p className="text-xs text-textMuted italic">No additional telemetry for this schema partition.</p>
-                        )}
-                      </div>
+                            </div>
 
-                      <div className="glass-panel p-5 rounded-xl border border-white/5 bg-white/5">
-                        <h3 className="text-xs uppercase tracking-widest text-textMuted font-bold mb-4 flex items-center gap-2">
-                          <CheckCircle size={14} /> Congressional Telemetry
-                        </h3>
-                        {/* ... existing votes ... */}
-                        <div className="space-y-3">
-                          {(detail.votes || []).length > 0 ? (detail.votes || []).map((v, idx) => (
-                            <div key={idx} className="bg-[#0d0d14] p-3 rounded-lg border border-white/5">
-                               <div className="flex justify-between items-center mb-2">
-                                 <span className="text-sm font-bold text-white tracking-wide">{v.chamber} | {v.type}</span>
-                                 <span className="text-xs text-textMuted">{v.date}</span>
-                               </div>
-                               <div className="flex items-center gap-4">
-                                  <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-success"></span> <span className="text-xs text-white">Y: {v.yes}</span></div>
-                                  <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-500"></span> <span className="text-xs text-white">N: {v.no}</span></div>
-                                  <span className="ml-auto text-xs font-bold text-success uppercase tracking-widest bg-success/10 px-2 py-0.5 rounded">{v.result}</span>
-                               </div>
-                            </div>
-                          )) : (
-                            <p className="text-xs text-textMuted italic">No recorded floor votes for this bill identity.</p>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="glass-panel p-5 rounded-xl border border-warning/20 bg-warning/5">
-                        <h3 className="text-xs uppercase tracking-widest text-warning font-bold mb-4 flex items-center gap-2">
-                          <Users size={14} /> Special Interest Distribution
-                        </h3>
-                        {loadingInfluence ? (
-                          <div className="flex items-center gap-2 text-[10px] text-textMuted py-4">
-                            <div className="w-3 h-3 border-2 border-warning border-t-transparent rounded-full animate-spin"></div>
-                            Auditing FEC Itemized Receipts...
-                          </div>
-                        ) : influence ? (
-                          <div className="space-y-4">
-                            <div className="flex justify-between items-center bg-warning/10 p-2 rounded border border-warning/20">
-                              <span className="text-[10px] text-warning font-bold uppercase">Exposure:</span>
-                              <span className="text-[10px] font-bold text-white">{influence.top_sector} Heavy</span>
-                            </div>
-                            <div className="space-y-2">
-                              {influence.sectors.map((s, idx) => (
-                                <div key={idx} className="group cursor-help">
-                                  <div className="flex justify-between text-[10px] mb-1">
-                                    <span className="text-textMuted group-hover:text-white transition-colors">{s.name}</span>
-                                    <span className="text-textMuted">${s.amount.toLocaleString()}</span>
-                                  </div>
-                                  <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                                    <motion.div 
-                                      initial={{ width: 0 }}
-                                      animate={{ width: `${(s.amount / Math.max(...influence.sectors.map(v => v.amount))) * 100}%` }}
-                                      className="h-full bg-warning/60 group-hover:bg-warning transition-colors"
-                                    />
-                                  </div>
-                                  <div className="hidden group-hover:block mt-1 flex flex-wrap gap-1">
-                                    {s.companies.map((c, i) => (
-                                      <span key={i} className="text-[8px] bg-white/5 px-1 rounded text-textMuted">{c}</span>
-                                    ))}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        ) : (
-                          <p className="text-xs text-textMuted italic">Influence map currently unavailable.</p>
-                        )}
-                      </div>
-
-                      <div className="glass-panel p-5 rounded-xl border border-secondary/20 bg-secondary/5">
-                        <h3 className="text-xs uppercase tracking-widest text-secondary font-bold mb-4 flex items-center gap-2">
-                          <Activity size={14} /> Public Pressure Pulse
-                        </h3>
-                        {loadingPulse ? (
-                          <div className="flex items-center gap-2 text-[10px] text-textMuted py-4">
-                            <div className="w-3 h-3 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
-                            Scanning Social Vectors (Reddit/X)...
-                          </div>
-                        ) : pulse ? (
-                          <div className="space-y-3">
-                            <div className="relative h-2 bg-white/5 rounded-full overflow-hidden">
-                              <motion.div 
-                                initial={{ width: 0 }}
-                                animate={{ width: `${pulse.score * 100}%` }}
-                                className={`absolute h-full ${pulse.score < 0.4 ? 'bg-red-500' : pulse.score < 0.6 ? 'bg-yellow-500' : 'bg-success'}`}
-                              />
-                            </div>
-                            <div className="flex justify-between items-center">
-                              <span className="text-[10px] font-bold text-white uppercase tracking-wider">{pulse.label}</span>
-                              <span className="text-[10px] text-textMuted">Support: {Math.round(pulse.score * 100)}%</span>
-                            </div>
-                            <p className="text-[10px] text-textMuted leading-relaxed italic border-l-2 border-secondary/30 pl-2">
-                              "{pulse.summary}"
-                            </p>
-                          </div>
-                        ) : (
-                          <p className="text-xs text-textMuted italic">Pressure gauge inactive for this session.</p>
-                        )}
-                      </div>
-
-                      {fedReg.length > 0 && (
-                        <div className="glass-panel p-5 rounded-xl border border-white/5 bg-white/5">
-                          <h3 className="text-xs uppercase tracking-widest text-textMuted font-bold mb-4 flex items-center gap-2">
-                            <ExternalLink size={14} /> Related Agency Documents
-                          </h3>
-                          <div className="space-y-2">
-                            {fedReg.map((doc, idx) => (
-                              <div key={idx} className="text-[10px] text-white p-2 bg-white/5 rounded border border-white/5 hover:bg-white/10 cursor-pointer" onClick={() => window.open(doc.html_url, '_blank')}>
-                                <span className="block font-bold text-textMuted truncate">{doc.agencies?.[0]}</span>
-                                <span className="line-clamp-1">{doc.title}</span>
+                            <div className="grid grid-cols-2 gap-6">
+                              <div className="glass-panel p-6 rounded-2xl border border-white/5 bg-white/5 group hover:border-primary/30 transition-all duration-500">
+                                <span className="text-[9px] uppercase tracking-widest text-textMuted block mb-2 font-black">Current Status</span>
+                                <span className="text-white font-black text-lg">{detail.status}</span>
                               </div>
-                            ))}
+                              <div className="glass-panel p-6 rounded-2xl border border-white/5 bg-white/5 group hover:border-primary/30 transition-all duration-500 text-right">
+                                <span className="text-[9px] uppercase tracking-widest text-textMuted block mb-2 font-black">Submission Date</span>
+                                <span className="text-white font-black text-lg">{detail.introduced_date}</span>
+                              </div>
+                            </div>
+
+                            <div className="glass-panel p-6 rounded-[2rem] border border-white/5 bg-white/5">
+                              <h3 className="text-[10px] uppercase tracking-[0.2em] text-textMuted font-black mb-6 flex items-center gap-2">
+                                <Users size={14} /> Lead Proponents
+                              </h3>
+                              <div className="flex flex-wrap gap-3">
+                                {(detail.sponsors || []).map((s, idx) => (
+                                  <div key={idx} className={`px-5 py-3 rounded-xl border border-white/5 bg-black/40 text-xs font-black shadow-xl ${s.party === 'D' ? 'text-blue-400' : 'text-red-400'}`}>
+                                    {s.member_name} <span className="opacity-50 ml-1">[{s.party}-{s.state}]</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="space-y-8">
+                            <div className="glass-panel p-6 rounded-3xl border border-white/5 bg-white/5">
+                                <h3 className="text-[10px] uppercase tracking-[0.2em] text-textMuted font-black mb-6 flex items-center gap-2">
+                                  <Network size={14} /> Matrix Connections
+                                </h3>
+                                <div className="space-y-3">
+                                  {(detail.related_bills || []).map((rb, idx) => (
+                                    <div key={idx} className="text-[11px] font-mono bg-secondary/5 border border-secondary/20 text-secondary px-3 py-2 rounded-lg block hover:bg-secondary/10 transition-colors">
+                                      {rb}
+                                    </div>
+                                  ))}
+                                </div>
+                            </div>
+
+                            <div className="glass-panel p-6 rounded-3xl border border-primary/20 bg-primary/5 relative overflow-hidden group">
+                               <div className="absolute top-3 right-3 px-2 py-0.5 bg-primary text-[8px] font-black text-black rounded-sm uppercase tracking-widest">Next Up</div>
+                               <h3 className="text-[10px] uppercase tracking-[0.2em] text-primary font-black mb-4">Passage Prognosis</h3>
+                               <p className="text-[10px] text-white/50 leading-relaxed font-medium mb-4">Modeling success probability based on committee seniority, bipartisanship, and historical alignment...</p>
+                               <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                                  <div className="h-full bg-primary/40 w-1/3 animate-pulse"></div>
+                               </div>
+                            </div>
                           </div>
                         </div>
                       )}
-                    </div>
 
-                  </div>
+                      {activeTab === "intelligence" && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in zoom-in-95 duration-500">
+                          {/* Financial Panel */}
+                          <div className="glass-panel p-8 rounded-[2.5rem] border border-red-500/10 bg-red-500/5 hover:bg-red-500/10 transition-all flex flex-col justify-between h-full group">
+                            <div>
+                               <h3 className="text-[10px] uppercase tracking-[0.2em] text-red-400 font-black mb-8 flex items-center gap-2">
+                                  <Zap size={14} className="group-hover:animate-bounce" /> Finance: OpenFEC
+                               </h3>
+                               {detail.finance ? (
+                                  <div className="space-y-8">
+                                     <div>
+                                        <p className="text-[10px] uppercase text-textMuted mb-2 font-black">Capital Inflow</p>
+                                        <p className="text-4xl font-black text-white tracking-tighter">${detail.finance.total_raised.toLocaleString()}</p>
+                                     </div>
+                                     <div className="flex justify-between items-end border-t border-white/10 pt-6">
+                                        <div>
+                                           <p className="text-[9px] uppercase text-textMuted mb-1 font-black">Disbursements</p>
+                                           <p className="text-lg font-black text-white">${Math.round(detail.finance.total_spent/1000)}k</p>
+                                        </div>
+                                        <div className="text-right text-success font-black text-[10px] tracking-widest bg-success/10 px-2 py-1 rounded">
+                                           HEALTHY
+                                        </div>
+                                     </div>
+                                  </div>
+                               ) : <p className="text-xs text-textMuted italic">Telemetry Offline</p>}
+                            </div>
+                          </div>
+
+                          {/* Influence Panel */}
+                          <div className="glass-panel p-8 rounded-[2.5rem] border border-warning/10 bg-warning/5 hover:bg-warning/10 transition-all flex flex-col h-full group">
+                             <h3 className="text-[10px] uppercase tracking-[0.2em] text-warning font-black mb-8 flex items-center gap-2">
+                                <Users size={14} /> Influence Map
+                             </h3>
+                             {influence ? (
+                                <div className="space-y-5 flex-1">
+                                   {influence.sectors.slice(0, 4).map((s, idx) => (
+                                      <div key={idx} className="group/item">
+                                         <div className="flex justify-between text-[11px] mb-2">
+                                            <span className="text-white font-black uppercase tracking-tight">{s.name}</span>
+                                            <span className="text-textMuted font-mono">${Math.round(s.amount/1000)}k</span>
+                                         </div>
+                                         <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                            <motion.div 
+                                              initial={{ width: 0 }}
+                                              animate={{ width: `${(s.amount / influence.sectors[0].amount) * 100}%` }}
+                                              className="h-full bg-warning/40 group-hover/item:bg-warning transition-colors" />
+                                         </div>
+                                      </div>
+                                   ))}
+                                </div>
+                             ) : <div className="animate-pulse h-48 bg-white/5 rounded-2xl"></div>}
+                          </div>
+
+                          {/* Pulse & Global Metrics */}
+                          <div className="space-y-6 flex flex-col">
+                             <div className="glass-panel p-8 rounded-[2.5rem] border border-secondary/10 bg-secondary/5 h-1/2 flex flex-col justify-between group">
+                                <h3 className="text-[10px] uppercase tracking-[0.2em] text-secondary font-black mb-4 flex items-center gap-2">
+                                   <Activity size={14} /> Public Pulse
+                                </h3>
+                                {pulse ? (
+                                   <div className="flex items-center gap-5">
+                                      <div className="w-20 h-20 rounded-full border-[8px] border-secondary/10 flex items-center justify-center relative shadow-2xl shadow-secondary/20">
+                                         <span className="text-sm font-black text-white">{Math.round(pulse.score * 100)}%</span>
+                                         <svg className="absolute -rotate-90 w-full h-full p-[-8px]">
+                                            <circle cx="40" cy="40" r="32" fill="transparent" stroke="currentColor" strokeWidth="8" className="text-secondary shadow-lg" strokeDasharray={`${pulse.score * 201} 201`} />
+                                         </svg>
+                                      </div>
+                                      <div className="flex-1">
+                                         <p className="text-xs font-black text-white uppercase mb-1 tracking-tighter">{pulse.label}</p>
+                                         <p className="text-[10px] text-textMuted italic leading-tight">"{pulse.summary}"</p>
+                                      </div>
+                                   </div>
+                                ) : <div className="h-full bg-white/5 rounded-2xl animate-pulse"></div>}
+                             </div>
+
+                             <div className="glass-panel p-8 rounded-[2.5rem] border border-[#4ade80]/10 bg-[#4ade80]/5 h-1/2 flex flex-col justify-between group">
+                                <h3 className="text-[10px] uppercase tracking-[0.2em] text-[#4ade80] font-black mb-4 flex items-center gap-2">
+                                   <Globe size={14} /> Global RAG
+                                </h3>
+                                {alignment ? (
+                                   <div className="space-y-4">
+                                      <p className="text-xs text-white font-black leading-tight group-hover:text-[#4ade80] transition-colors">{alignment.standard}</p>
+                                      <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-[#4ade80]">
+                                         <span className="opacity-60">Match Score:</span>
+                                         <span>{Math.round(alignment.alignment_score * 100)}%</span>
+                                      </div>
+                                      <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                         <div className="h-full bg-[#4ade80]/50" style={{width: `${alignment.alignment_score * 100}%`}}></div>
+                                      </div>
+                                   </div>
+                                ) : <div className="h-full bg-white/5 rounded-2xl animate-pulse"></div>}
+                             </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {activeTab === "analysis" && (
+                        <div className="space-y-10 animate-in slide-in-from-right-8 duration-500 max-w-4xl mx-auto">
+                           <button 
+                             onClick={generateAIReport}
+                             disabled={generatingReport}
+                             className="w-full group relative flex items-center justify-center gap-5 py-10 rounded-[3rem] bg-gradient-to-br from-primary/20 to-transparent border-2 border-primary/20 overflow-hidden shadow-2xl shadow-primary/10"
+                           >
+                             <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                             <Sparkles size={32} className={generatingReport ? 'animate-spin text-white' : 'text-primary scale-110 group-hover:rotate-12 transition-all'} />
+                             <div className="text-left">
+                               <p className="text-xs uppercase font-black text-primary/60 tracking-[0.3em] mb-1">Agentic Risk Scoring</p>
+                               <span className="text-2xl font-black text-white">{generatingReport ? 'Synthesizing Decision Matrix...' : 'Generate Full Impact Statement'}</span>
+                             </div>
+                           </button>
+
+                           {report && (
+                             <div className="glass-panel p-10 rounded-[3rem] border border-primary/20 bg-[#0d0d14] relative shadow-2xl">
+                               <div className="absolute -top-3 left-10 px-6 py-1.5 bg-primary text-black text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-lg">ARIS OUTPUT :: SECURED</div>
+                               <div className="text-white/90 leading-loose text-base font-medium space-y-4" dangerouslySetInnerHTML={{ __html: report.replace(/\n/g, '<br/>') }} />
+                             </div>
+                           )}
+                        </div>
+                      )}
+                    </div>
                 </div>
                 
                 <div className="p-4 border-t border-white/5 bg-[#181824] flex justify-end">
