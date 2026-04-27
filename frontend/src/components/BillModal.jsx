@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Users, Activity, ExternalLink, Network, CheckCircle, XCircle, Sparkles, Globe } from 'lucide-react';
+import { X, Users, Activity, ExternalLink, Network, CheckCircle, XCircle, Sparkles, Globe, Zap } from 'lucide-react';
 import API_BASE_URL from '../api_config';
 
 export default function BillModal({ billId, onClose }) {
@@ -12,11 +12,13 @@ export default function BillModal({ billId, onClose }) {
   const [pulse, setPulse] = useState(null);
   const [alignment, setAlignment] = useState(null);
   const [influence, setInfluence] = useState(null);
+  const [prognosis, setPrognosis] = useState(null);
   const [activeTab, setActiveTab] = useState("overview"); 
   const [generatingReport, setGeneratingReport] = useState(false);
   const [loadingPulse, setLoadingPulse] = useState(false);
   const [loadingAlignment, setLoadingAlignment] = useState(false);
   const [loadingInfluence, setLoadingInfluence] = useState(false);
+  const [loadingPrognosis, setLoadingPrognosis] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const generateAIReport = async () => {
@@ -76,6 +78,13 @@ export default function BillModal({ billId, onClose }) {
           .then(res => setInfluence(res.data.influence))
           .catch(e => console.error("Lobbying fetch failed", e))
           .finally(() => setLoadingInfluence(false));
+
+        // Fetch Passage Prognosis (Phase 3)
+        setLoadingPrognosis(true);
+        axios.post(`${API_BASE_URL}/api/analysis/prognosis/${billId}`)
+          .then(res => setPrognosis(res.data.prognosis))
+          .catch(e => console.error("Prognosis fetch failed", e))
+          .finally(() => setLoadingPrognosis(false));
 
       } catch (err) {
         console.error("Modal multi-fetch error", err);
@@ -201,12 +210,25 @@ export default function BillModal({ billId, onClose }) {
                             </div>
 
                             <div className="glass-panel p-6 rounded-3xl border border-primary/20 bg-primary/5 relative overflow-hidden group">
-                               <div className="absolute top-3 right-3 px-2 py-0.5 bg-primary text-[8px] font-black text-black rounded-sm uppercase tracking-widest">Next Up</div>
+                               <div className="absolute top-3 right-3 px-2 py-0.5 bg-primary text-[8px] font-black text-black rounded-sm uppercase tracking-widest">Phase 3</div>
                                <h3 className="text-[10px] uppercase tracking-[0.2em] text-primary font-black mb-4">Passage Prognosis</h3>
-                               <p className="text-[10px] text-white/50 leading-relaxed font-medium mb-4">Modeling success probability based on committee seniority, bipartisanship, and historical alignment...</p>
-                               <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                                  <div className="h-full bg-primary/40 w-1/3 animate-pulse"></div>
-                               </div>
+                               {loadingPrognosis ? (
+                                  <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                                     <div className="h-full bg-primary/40 w-full animate-progress"></div>
+                                  </div>
+                               ) : prognosis ? (
+                                  <div className="space-y-3">
+                                     <div className="flex justify-between items-end">
+                                        <span className="text-3xl font-black text-white tracking-tighter">{Math.round(prognosis.score * 100)}%</span>
+                                        <span className={`text-[10px] font-black uppercase tracking-widest ${prognosis.momentum === 'high' ? 'text-success' : 'text-textMuted'}`}>
+                                          {prognosis.momentum} Momentum
+                                        </span>
+                                     </div>
+                                     <p className="text-[10px] text-white/70 leading-relaxed font-medium">"{prognosis.reasoning}"</p>
+                                  </div>
+                               ) : (
+                                  <p className="text-[10px] text-textMuted italic">Telemetry Offline</p>
+                               )}
                             </div>
                           </div>
                         </div>
