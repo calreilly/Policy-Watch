@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Users, Activity, ExternalLink, Network, CheckCircle, XCircle, Sparkles } from 'lucide-react';
+import { X, Users, Activity, ExternalLink, Network, CheckCircle, XCircle, Sparkles, Globe } from 'lucide-react';
 import API_BASE_URL from '../api_config';
 
 export default function BillModal({ billId, onClose }) {
@@ -10,8 +10,10 @@ export default function BillModal({ billId, onClose }) {
   const [fedReg, setFedReg] = useState([]);
   const [report, setReport] = useState("");
   const [pulse, setPulse] = useState(null);
+  const [alignment, setAlignment] = useState(null);
   const [generatingReport, setGeneratingReport] = useState(false);
   const [loadingPulse, setLoadingPulse] = useState(false);
+  const [loadingAlignment, setLoadingAlignment] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const generateAIReport = async () => {
@@ -57,6 +59,13 @@ export default function BillModal({ billId, onClose }) {
           .then(res => setPulse(res.data.pulse))
           .catch(e => console.error("Pulse fetch failed", e))
           .finally(() => setLoadingPulse(false));
+          
+        // Fetch Global Alignment
+        setLoadingAlignment(true);
+        axios.post(`${API_BASE_URL}/api/analysis/global-alignment/${billId}`)
+          .then(res => setAlignment(res.data.alignment))
+          .catch(e => console.error("Alignment fetch failed", e))
+          .finally(() => setLoadingAlignment(false));
 
       } catch (err) {
         console.error("Modal multi-fetch error", err);
@@ -135,6 +144,40 @@ export default function BillModal({ billId, onClose }) {
                              </span>
                           ))}
                         </div>
+                      </div>
+
+                      <div className="glass-panel p-5 rounded-xl border border-[#4ade80]/20 bg-[#4ade80]/5">
+                        <h3 className="text-xs uppercase tracking-widest text-[#4ade80] font-bold mb-4 flex items-center gap-2">
+                          <Globe size={14} /> Global Policy Alignment
+                        </h3>
+                        {loadingAlignment ? (
+                          <div className="flex items-center gap-2 text-[10px] text-textMuted py-4">
+                            <div className="w-3 h-3 border-2 border-[#4ade80] border-t-transparent rounded-full animate-spin"></div>
+                            Benchmarking against International Standards...
+                          </div>
+                        ) : alignment ? (
+                          <div className="space-y-3">
+                            <div className="flex justify-between items-center mb-1">
+                              <span className="text-[10px] text-textMuted uppercase">Reg. Match:</span>
+                              <span className="text-[10px] font-bold text-[#4ade80]">{alignment.standard}</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                <motion.div 
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${alignment.alignment_score * 100}%` }}
+                                  className="h-full bg-[#4ade80]"
+                                />
+                              </div>
+                              <span className="text-[10px] font-mono text-white">{Math.round(alignment.alignment_score * 100)}%</span>
+                            </div>
+                            <p className="text-[10px] text-textMuted leading-relaxed bg-black/20 p-2 rounded border border-white/5 line-clamp-3">
+                              {alignment.context}
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="text-xs text-textMuted italic">Global cross-referencing offline.</p>
+                        )}
                       </div>
 
                       <div className="glass-panel p-5 rounded-xl border border-primary/20 bg-primary/5">
