@@ -28,6 +28,20 @@ async def lifespan(app: FastAPI):
         congress_service.seed_database(db)
         all_bills = db.query(Bill).all()
         rag_service.seed_embeddings(all_bills)
+        
+        # Seed Global Benchmarks
+        eu_ai_act = {
+            "title": "EU Artificial Intelligence Act (Regulation 2024/1689)",
+            "source": "European Parliament",
+            "text": """
+            Fundamental framework for AI regulation in the EU. 
+            Risk categories: Prohibited (Clear threat), High-Risk (Critical infrastructure, hiring, credit), 
+            Limited-Risk (Transparency requirements), Minimal-Risk (No obligations).
+            Obligations for GPAI models: Transparency, documentation, human oversight. 
+            Phased implementation from 2024 to 2027.
+            """
+        }
+        rag_service.seed_global_benchmarks([eu_ai_act])
     except Exception as e:
         print(f"Startup warning: Database seeding failed: {e}")
     finally:

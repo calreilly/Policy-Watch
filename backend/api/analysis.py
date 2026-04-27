@@ -36,3 +36,17 @@ async def get_sentiment(bill_id: str, db: Session = Depends(get_db)):
     pulse = service.analyze_public_pulse(bill_number, bill.title)
     
     return {"status": "success", "pulse": pulse}
+
+@router.post("/global-alignment/{bill_id}")
+async def get_global_alignment(bill_id: str, db: Session = Depends(get_db)):
+    """Compare a bill's alignment with international policy standards."""
+    bill = db.query(Bill).filter(Bill.id == bill_id).first()
+    if not bill:
+        raise HTTPException(status_code=404, detail="Bill not found")
+        
+    from services.rag_service import RAGService
+    rag = RAGService()
+    text = f"{bill.title} {bill.summary}"
+    alignment = rag.compare_against_global(text)
+    
+    return {"status": "success", "alignment": alignment}

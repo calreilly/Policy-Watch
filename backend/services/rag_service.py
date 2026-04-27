@@ -14,16 +14,17 @@ class RAGService:
             path="./chromadb_data",
             settings=Settings(anonymized_telemetry=False)
         )
-        self.collection = self.get_or_create_collection()
+        self.collection = self.get_or_create_collection(self.COLLECTION_NAME)
+        self.global_collection = self.get_or_create_collection("global_benchmarks")
         self.bm25_index = None
         self.bm25_corpus = []
         
-    def get_or_create_collection(self):
+    def get_or_create_collection(self, name: str):
         try:
-            return self.client.get_collection(name=self.COLLECTION_NAME)
+            return self.client.get_collection(name=name)
         except:
             return self.client.create_collection(
-                name=self.COLLECTION_NAME,
+                name=name,
                 metadata={"hnsw:space": "cosine"}
             )
             
@@ -112,3 +113,34 @@ class RAGService:
                 print(f"LLM reranking failed: {e}")
 
         return retrieved[:top_k]
+
+    def seed_global_benchmarks(self, docsList: List[dict]):
+        """Seed international policy standards (e.g. EU AI Act)."""
+        for i, doc in enumerate(docsList):
+            self.global_collection.add(
+                ids=[f"global_{i}"],
+                documents=[doc["text"]],
+                metadatas=[{"title": doc["title"], "source": doc["source"]}]
+            )
+
+    def compare_against_global(self, bill_text: str):
+        """Find the closest international standard for a given bill."""
+        try:
+            results = self.global_collection.query(
+                query_texts=[bill_text],
+                n_results=1
+            )
+            if results and results.get('documents') and len(results['documents']) > 0:
+                doc = results['documents'][0][0]
+                meta = results['metadatas'][0][0]
+                distance = results['distances'][0][0] if results.get('distances') else 0.5
+                # Normalize distance to alignment (cosine distance 0 = same, 1 = orthogonal)
+                alignment = max(0, 1 - distance)
+                return {
+                    "standard": meta.get('title'),
+                    "context": doc[:300] + "...",
+                    "alignment_score": round(alignment, 2)
+                }
+        except Exception as e:
+            print(f"Global comparison failed: {e}")
+        return None

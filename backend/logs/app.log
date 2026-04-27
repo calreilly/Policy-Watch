@@ -10682,3 +10682,10 @@
 {"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.govtrack.us:443 \"GET /api/v2/bill?q=8191&congress=119&limit=10 HTTP/1.1\" 200 4122"}
 {"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
 {"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Bterm%5D=8191+HR&per_page=2&order=relevance HTTP/1.1\" 200 1710"}
+{"timestamp": null, "level": null, "name": "chromadb.config", "message": "Starting component PersistentLocalHnswSegment"}
+{"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event CollectionQueryEvent: capture() takes 1 positional argument but 3 were given"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): api.open.fec.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://api.open.fec.gov:443 \"GET /v1/candidates/search/?api_key=DEMO_KEY&q=Subramanyam%2C+Suhas&sort=-receipts HTTP/1.1\" 429 None"}
+{"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): api.open.fec.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://api.open.fec.gov:443 \"GET /v1/candidates/search/?api_key=DEMO_KEY&q=Subramanyam%2C+Suhas&sort=-receipts HTTP/1.1\" 429 None"}
