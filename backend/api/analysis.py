@@ -19,7 +19,8 @@ async def get_impact_report(bill_id: str, db: Session = Depends(get_db)):
     
     agent = ImpactAgent()
     report = agent.generate_impact_report(bill.title, bill.summary or bill.latest_action_text)
-    
+    return {"status": "success", "report": report}
+
 from services.sentiment_service import SentimentService
 
 @router.post("/sentiment/{bill_id}")
