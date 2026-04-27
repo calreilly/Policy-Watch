@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Columns, ArrowRightLeft, ShieldAlert, CheckCircle, Info } from 'lucide-react';
 import axios from 'axios';
-import { API_BASE_URL } from '../api_config';
+import API_BASE_URL from '../api_config';
 
 const BillComparison = ({ selectedBills = [] }) => {
   const [comparisonData, setComparisonData] = useState(null);
@@ -85,9 +85,9 @@ const BillComparison = ({ selectedBills = [] }) => {
                       <Columns size={12} /> IMPACTED SECTORS
                     </span>
                     <div className="flex flex-wrap gap-2">
-                      {data.impact.sectors.map(s => (
-                        <span key={s} className="px-2 py-1 bg-white/10 rounded text-xs text-gray-300 border border-white/10">
-                          {s}
+                      {(Array.isArray(data.impact?.sectors) ? data.impact.sectors : ["General"]).map(s => (
+                        <span key={String(s)} className="px-2 py-1 bg-white/10 rounded text-xs text-gray-300 border border-white/10">
+                          {String(s)}
                         </span>
                       ))}
                     </div>
@@ -97,23 +97,29 @@ const BillComparison = ({ selectedBills = [] }) => {
                     <span className="text-xs font-bold text-gray-500 flex items-center gap-1">
                       <Info size={12} /> BUDGETARY IMPLICATIONS
                     </span>
-                    <p className="text-sm text-gray-300 leading-relaxed bg-white/5 p-3 rounded-lg">
-                      {data.impact.budgetary_impact}
-                    </p>
+                    <div className="text-sm text-gray-300 leading-relaxed bg-white/5 p-3 rounded-lg">
+                      {typeof data.impact?.budgetary_impact === 'object' 
+                        ? JSON.stringify(data.impact.budgetary_impact) 
+                        : String(data.impact?.budgetary_impact || "N/A")}
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-2">
                     <span className="text-xs font-bold text-gray-500 flex items-center gap-1">
                       <CheckCircle size={12} /> TIMELINE
                     </span>
-                    <p className="text-sm text-gray-400">{data.impact.timeline}</p>
+                    <p className="text-sm text-gray-400">{data.impact?.timeline || "Unknown"}</p>
                   </div>
 
                   <div className="flex flex-col gap-2">
                     <span className="text-xs font-bold text-gray-500 flex items-center gap-1">
                       <ShieldAlert size={12} /> RISK ASSESSMENT
                     </span>
-                    <p className="text-sm text-red-300/80 italic">{data.impact.risks}</p>
+                    <p className="text-sm text-red-300/80 italic">
+                      {typeof data.impact?.risks === 'object' 
+                        ? JSON.stringify(data.impact.risks) 
+                        : String(data.impact?.risks || "Unassessed")}
+                    </p>
                   </div>
                 </div>
               </div>
