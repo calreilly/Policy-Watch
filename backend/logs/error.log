@@ -174,3 +174,4 @@
 {"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given"}
 {"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given"}
 {"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event CollectionGetEvent: capture() takes 1 positional argument but 3 were given"}
+{"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given"}

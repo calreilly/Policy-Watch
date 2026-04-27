@@ -10672,3 +10672,13 @@
 {"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): api.congress.gov:443"}
 {"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://api.congress.gov:443 \"GET /v3/bill/119/hr/2528/actions?api_key=DIL5nZyDwxFmSA3gPwl4ZE0fyasYvgThrT7Oz41L&format=json HTTP/1.1\" 200 None"}
 {"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event CollectionGetEvent: capture() takes 1 positional argument but 3 were given"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.govtrack.us:443"}
+{"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given"}
+{"timestamp": null, "level": null, "name": "chromadb.utils.embedding_functions", "message": "WARNING: No ONNX providers provided, defaulting to available providers: ['CoreMLExecutionProvider', 'AzureExecutionProvider', 'CPUExecutionProvider']"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.govtrack.us:443 \"GET /api/v2/bill?q=8191&congress=119&limit=10 HTTP/1.1\" 200 4122"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.govtrack.us:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Bterm%5D=8191+HR&per_page=2&order=relevance HTTP/1.1\" 200 1710"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.govtrack.us:443 \"GET /api/v2/bill?q=8191&congress=119&limit=10 HTTP/1.1\" 200 4122"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Bterm%5D=8191+HR&per_page=2&order=relevance HTTP/1.1\" 200 1710"}

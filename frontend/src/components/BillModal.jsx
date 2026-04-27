@@ -9,7 +9,9 @@ export default function BillModal({ billId, onClose }) {
   const [govtrack, setGovtrack] = useState(null);
   const [fedReg, setFedReg] = useState([]);
   const [report, setReport] = useState("");
+  const [pulse, setPulse] = useState(null);
   const [generatingReport, setGeneratingReport] = useState(false);
+  const [loadingPulse, setLoadingPulse] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const generateAIReport = async () => {
@@ -48,6 +50,14 @@ export default function BillModal({ billId, onClose }) {
         }
         
         if (frRes?.data?.results) setFedReg(frRes.data.results);
+
+        // Fetch Social Sentiment Pulse
+        setLoadingPulse(true);
+        axios.post(`${API_BASE_URL}/api/analysis/sentiment/${billId}`)
+          .then(res => setPulse(res.data.pulse))
+          .catch(e => console.error("Pulse fetch failed", e))
+          .finally(() => setLoadingPulse(false));
+
       } catch (err) {
         console.error("Modal multi-fetch error", err);
       } finally {
@@ -252,6 +262,37 @@ export default function BillModal({ billId, onClose }) {
                             <p className="text-xs text-textMuted italic">No recorded floor votes for this bill identity.</p>
                           )}
                         </div>
+                      </div>
+
+                      <div className="glass-panel p-5 rounded-xl border border-secondary/20 bg-secondary/5">
+                        <h3 className="text-xs uppercase tracking-widest text-secondary font-bold mb-4 flex items-center gap-2">
+                          <Activity size={14} /> Public Pressure Pulse
+                        </h3>
+                        {loadingPulse ? (
+                          <div className="flex items-center gap-2 text-[10px] text-textMuted py-4">
+                            <div className="w-3 h-3 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
+                            Scanning Social Vectors (Reddit/X)...
+                          </div>
+                        ) : pulse ? (
+                          <div className="space-y-3">
+                            <div className="relative h-2 bg-white/5 rounded-full overflow-hidden">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${pulse.score * 100}%` }}
+                                className={`absolute h-full ${pulse.score < 0.4 ? 'bg-red-500' : pulse.score < 0.6 ? 'bg-yellow-500' : 'bg-success'}`}
+                              />
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-bold text-white uppercase tracking-wider">{pulse.label}</span>
+                              <span className="text-[10px] text-textMuted">Support: {Math.round(pulse.score * 100)}%</span>
+                            </div>
+                            <p className="text-[10px] text-textMuted leading-relaxed italic border-l-2 border-secondary/30 pl-2">
+                              "{pulse.summary}"
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="text-xs text-textMuted italic">Pressure gauge inactive for this session.</p>
+                        )}
                       </div>
 
                       {fedReg.length > 0 && (
