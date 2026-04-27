@@ -11,9 +11,11 @@ export default function BillModal({ billId, onClose }) {
   const [report, setReport] = useState("");
   const [pulse, setPulse] = useState(null);
   const [alignment, setAlignment] = useState(null);
+  const [influence, setInfluence] = useState(null);
   const [generatingReport, setGeneratingReport] = useState(false);
   const [loadingPulse, setLoadingPulse] = useState(false);
   const [loadingAlignment, setLoadingAlignment] = useState(false);
+  const [loadingInfluence, setLoadingInfluence] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const generateAIReport = async () => {
@@ -66,6 +68,13 @@ export default function BillModal({ billId, onClose }) {
           .then(res => setAlignment(res.data.alignment))
           .catch(e => console.error("Alignment fetch failed", e))
           .finally(() => setLoadingAlignment(false));
+
+        // Fetch Lobbying Influence
+        setLoadingInfluence(true);
+        axios.post(`${API_BASE_URL}/api/analysis/lobbying/${billId}`)
+          .then(res => setInfluence(res.data.influence))
+          .catch(e => console.error("Lobbying fetch failed", e))
+          .finally(() => setLoadingInfluence(false));
 
       } catch (err) {
         console.error("Modal multi-fetch error", err);
@@ -305,6 +314,49 @@ export default function BillModal({ billId, onClose }) {
                             <p className="text-xs text-textMuted italic">No recorded floor votes for this bill identity.</p>
                           )}
                         </div>
+                      </div>
+
+                      <div className="glass-panel p-5 rounded-xl border border-warning/20 bg-warning/5">
+                        <h3 className="text-xs uppercase tracking-widest text-warning font-bold mb-4 flex items-center gap-2">
+                          <Users size={14} /> Special Interest Distribution
+                        </h3>
+                        {loadingInfluence ? (
+                          <div className="flex items-center gap-2 text-[10px] text-textMuted py-4">
+                            <div className="w-3 h-3 border-2 border-warning border-t-transparent rounded-full animate-spin"></div>
+                            Auditing FEC Itemized Receipts...
+                          </div>
+                        ) : influence ? (
+                          <div className="space-y-4">
+                            <div className="flex justify-between items-center bg-warning/10 p-2 rounded border border-warning/20">
+                              <span className="text-[10px] text-warning font-bold uppercase">Exposure:</span>
+                              <span className="text-[10px] font-bold text-white">{influence.top_sector} Heavy</span>
+                            </div>
+                            <div className="space-y-2">
+                              {influence.sectors.map((s, idx) => (
+                                <div key={idx} className="group cursor-help">
+                                  <div className="flex justify-between text-[10px] mb-1">
+                                    <span className="text-textMuted group-hover:text-white transition-colors">{s.name}</span>
+                                    <span className="text-textMuted">${s.amount.toLocaleString()}</span>
+                                  </div>
+                                  <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <motion.div 
+                                      initial={{ width: 0 }}
+                                      animate={{ width: `${(s.amount / Math.max(...influence.sectors.map(v => v.amount))) * 100}%` }}
+                                      className="h-full bg-warning/60 group-hover:bg-warning transition-colors"
+                                    />
+                                  </div>
+                                  <div className="hidden group-hover:block mt-1 flex flex-wrap gap-1">
+                                    {s.companies.map((c, i) => (
+                                      <span key={i} className="text-[8px] bg-white/5 px-1 rounded text-textMuted">{c}</span>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <p className="text-xs text-textMuted italic">Influence map currently unavailable.</p>
+                        )}
                       </div>
 
                       <div className="glass-panel p-5 rounded-xl border border-secondary/20 bg-secondary/5">
