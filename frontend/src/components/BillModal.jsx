@@ -109,10 +109,11 @@ export default function BillModal({ billId, onClose }) {
           />
           
           <motion.div 
-            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            initial={{ opacity: 0, y: 30, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="relative w-full max-w-4xl max-h-[85vh] bg-[#12121c] border border-primary/30 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+            exit={{ opacity: 0, y: 15, scale: 0.98, transition: { duration: 0.2 } }}
+            style={{ willChange: 'transform, opacity' }}
+            className="relative w-full max-w-4xl max-h-[85vh] bg-[#1a1a24] border border-primary/30 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col"
           >
             {loading || !detail ? (
               <div className="p-12 flex flex-col items-center justify-center h-64">

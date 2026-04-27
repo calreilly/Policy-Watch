@@ -169,7 +169,9 @@ export default function Dashboard() {
       </div>
       
       {/* Dynamic Modal Overlay */}
-      <BillModal billId={selectedBillId} onClose={() => setSelectedBillId(null)} />
+      {selectedBillId && (
+        <BillModal billId={selectedBillId} onClose={() => setSelectedBillId(null)} />
+      )}
     </div>
   );
 }

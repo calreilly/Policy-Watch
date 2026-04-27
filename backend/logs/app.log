@@ -14029,3 +14029,140 @@
 {"timestamp": null, "level": null, "name": "httpcore.http11", "message": "response_closed.complete"}
 {"timestamp": null, "level": null, "name": "openai._base_client", "message": "HTTP Response: POST https://api.openai.com/v1/chat/completions \"200 OK\" Headers({'date': 'Mon, 27 Apr 2026 00:40:11 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'cf-ray': '9f29c6351869c94e-IAD', 'cf-cache-status': 'DYNAMIC', 'server': 'cloudflare', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'access-control-expose-headers': 'X-Request-ID', 'openai-organization': 'user-wbl97s7vbbrinjvml1obpcgb', 'openai-processing-ms': '1435', 'openai-project': 'proj_Dx4wMrK2rccYmn2takd4rYgx', 'openai-version': '2020-10-01', 'x-openai-proxy-wasm': 'v0.1', 'x-ratelimit-limit-requests': '10000', 'x-ratelimit-limit-tokens': '200000', 'x-ratelimit-remaining-requests': '9998', 'x-ratelimit-remaining-tokens': '199874', 'x-ratelimit-reset-requests': '14.759s', 'x-ratelimit-reset-tokens': '37ms', 'x-request-id': 'req_4092fd95913e4c9d96cc440bab060440', 'content-encoding': 'br', 'alt-svc': 'h3=\":443\"; ma=86400'})"}
 {"timestamp": null, "level": null, "name": "openai._base_client", "message": "request_id: req_4092fd95913e4c9d96cc440bab060440"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting Set-Cookie 'Cookie { cookie_string: Some(\"arc=us\"), name: Indexed(0, 3), value: Indexed(4, 6), expires: None, max_age: None, domain: None, path: None, secure: None, http_only: None, same_site: None, partitioned: None }'"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting Set-Cookie 'Cookie { cookie_string: Some(\"lb=en\"), name: Indexed(0, 2), value: Indexed(3, 5), expires: None, max_age: None, domain: None, path: None, secure: None, http_only: None, same_site: None, partitioned: None }'"}
+{"timestamp": null, "level": null, "name": "rquest.connect", "message": "starting new connection: https://www.mojeek.com/"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.dns", "message": "resolving www.mojeek.com"}
+{"timestamp": null, "level": null, "name": "rquest.connect", "message": "starting new connection: https://en.wikipedia.org/"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.dns", "message": "resolving en.wikipedia.org"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.http", "message": "connecting to [2620:0:861:ed1a::1]:443"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.http", "message": "connected to [2620:0:861:ed1a::1]:443"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.http", "message": "connecting to 5.102.173.68:443"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.pool", "message": "pooling idle connection for PoolKey { uri: https://en.wikipedia.org/, alpn_protos: None, network: default }"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting secure cookie 'WMF-Last-Access'"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting secure cookie 'WMF-Last-Access-Global'"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting secure cookie 'GeoIP'"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting secure cookie 'NetworkProbeLimit'"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting secure cookie 'WMF-Uniq'"}
+{"timestamp": null, "level": null, "name": "primp", "message": "response: https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=US%20Congress%20legislation%20bill%202025 200"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.http", "message": "connected to 5.102.173.68:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "primp", "message": "response: https://www.mojeek.com/search?q=US+Congress+legislation+bill+2025 200"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.pool", "message": "pooling idle connection for PoolKey { uri: https://www.mojeek.com/, alpn_protos: None, network: default }"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "rquest.connect", "message": "starting new connection: https://en.wikipedia.org/"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting Set-Cookie 'Cookie { cookie_string: Some(\"arc=us\"), name: Indexed(0, 3), value: Indexed(4, 6), expires: None, max_age: None, domain: None, path: None, secure: None, http_only: None, same_site: None, partitioned: None }'"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting Set-Cookie 'Cookie { cookie_string: Some(\"lb=en\"), name: Indexed(0, 2), value: Indexed(3, 5), expires: None, max_age: None, domain: None, path: None, secure: None, http_only: None, same_site: None, partitioned: None }'"}
+{"timestamp": null, "level": null, "name": "rquest.connect", "message": "starting new connection: https://www.mojeek.com/"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.dns", "message": "resolving en.wikipedia.org"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.dns", "message": "resolving www.mojeek.com"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.http", "message": "connecting to [2620:0:861:ed1a::1]:443"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.http", "message": "connecting to 5.102.173.68:443"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.http", "message": "connected to [2620:0:861:ed1a::1]:443"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.pool", "message": "pooling idle connection for PoolKey { uri: https://en.wikipedia.org/, alpn_protos: None, network: default }"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.connect.http", "message": "connected to 5.102.173.68:443"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting secure cookie 'WMF-Last-Access'"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting secure cookie 'WMF-Last-Access-Global'"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting secure cookie 'GeoIP'"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting secure cookie 'NetworkProbeLimit'"}
+{"timestamp": null, "level": null, "name": "cookie_store.cookie_store", "message": "inserting secure cookie 'WMF-Uniq'"}
+{"timestamp": null, "level": null, "name": "primp", "message": "response: https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=US%20Congress%20legislation%20bill%202025 200"}
+{"timestamp": null, "level": null, "name": "primp", "message": "response: https://www.mojeek.com/search?q=US+Congress+legislation+bill+2025 200"}
+{"timestamp": null, "level": null, "name": "rquest.util.client.pool", "message": "pooling idle connection for PoolKey { uri: https://www.mojeek.com/, alpn_protos: None, network: default }"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=04%2F13%2F2026&per_page=3&order=newest HTTP/1.1\" 200 1929"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.federalregister.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): www.govtrack.us:443"}
+{"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.govtrack.us:443 \"GET /api/v2/bill?q=8191&congress=119&limit=10 HTTP/1.1\" 200 4122"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://www.federalregister.gov:443 \"GET /api/v1/documents.json?conditions%5Bterm%5D=8191+HR&per_page=2&order=relevance HTTP/1.1\" 200 1710"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): api.open.fec.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://api.open.fec.gov:443 \"GET /v1/candidates/search/?api_key=DEMO_KEY&q=Subramanyam%2C+Suhas&sort=-receipts HTTP/1.1\" 429 None"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "primp.utils", "message": "Loaded CA certs"}
+{"timestamp": null, "level": null, "name": "PolicyWatchLoader", "message": "[SentimentService] Unsupported protocol version 0x304"}
+{"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "Starting new HTTPS connection (1): api.open.fec.gov:443"}
+{"timestamp": null, "level": null, "name": "urllib3.connectionpool", "message": "https://api.open.fec.gov:443 \"GET /v1/candidates/search/?api_key=DEMO_KEY&q=Subramanyam%2C+Suhas&sort=-receipts HTTP/1.1\" 429 None"}
+{"timestamp": null, "level": null, "name": "openai._base_client", "message": "Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'idempotency_key': 'stainless-python-retry-3fc8ab13-3a0a-4a31-a627-2181fc3c3828', 'json_data': {'messages': [{'role': 'system', 'content': 'You are a senior congressional parliamentarian.'}, {'role': 'user', 'content': \"\\n            Analyze the following bill title and summary for legislative friction in the 119th Congress.\\n            Title: Immigration Status Notification and Transparency Act of 2026\\n            Summary: [House] Immigration Status Notification and Transparency Act of 2026\\n            \\n            Return a JSON object with:\\n            - friction_score: 0.0 (easy) to 1.0 (deadlock)\\n            - reasoning: 1 sentence on why\\n            - momentum: 'high', 'stable', or 'low'\\n            \"}], 'model': 'gpt-4o-mini', 'response_format': {'type': 'json_object'}}}"}
+{"timestamp": null, "level": null, "name": "openai._base_client", "message": "Sending HTTP Request: POST https://api.openai.com/v1/chat/completions"}
+{"timestamp": null, "level": null, "name": "httpcore.connection", "message": "close.started"}
+{"timestamp": null, "level": null, "name": "httpcore.connection", "message": "close.complete"}
+{"timestamp": null, "level": null, "name": "httpcore.connection", "message": "connect_tcp.started host='api.openai.com' port=443 local_address=None timeout=5.0 socket_options=None"}
+{"timestamp": null, "level": null, "name": "httpcore.connection", "message": "connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x16a172dc0>"}
+{"timestamp": null, "level": null, "name": "httpcore.connection", "message": "start_tls.started ssl_context=<ssl.SSLContext object at 0x13138ac10> server_hostname='api.openai.com' timeout=5.0"}
+{"timestamp": null, "level": null, "name": "httpcore.connection", "message": "start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x16b321d90>"}
+{"timestamp": null, "level": null, "name": "httpcore.http11", "message": "send_request_headers.started request=<Request [b'POST']>"}
+{"timestamp": null, "level": null, "name": "httpcore.http11", "message": "send_request_headers.complete"}
+{"timestamp": null, "level": null, "name": "httpcore.http11", "message": "send_request_body.started request=<Request [b'POST']>"}
+{"timestamp": null, "level": null, "name": "httpcore.http11", "message": "send_request_body.complete"}
+{"timestamp": null, "level": null, "name": "httpcore.http11", "message": "receive_response_headers.started request=<Request [b'POST']>"}
+{"timestamp": "2026-04-27T00:53:12.182274", "level": null, "name": "core.logging_config", "message": "Logging initialized"}
+{"timestamp": null, "level": null, "name": "chromadb.auth.registry", "message": "Registering provider: token_config"}
+{"timestamp": null, "level": null, "name": "chromadb.auth.registry", "message": "Registering provider: user_token_config"}
+{"timestamp": null, "level": null, "name": "chromadb.auth.registry", "message": "Registering provider: token"}
+{"timestamp": null, "level": null, "name": "chromadb.auth.registry", "message": "Registering provider: token"}
+{"timestamp": null, "level": null, "name": "chromadb.config", "message": "Starting component System"}
+{"timestamp": null, "level": null, "name": "chromadb.config", "message": "Starting component Posthog"}
+{"timestamp": null, "level": null, "name": "chromadb.config", "message": "Starting component OpenTelemetryClient"}
+{"timestamp": null, "level": null, "name": "chromadb.config", "message": "Starting component SimpleAssignmentPolicy"}
+{"timestamp": null, "level": null, "name": "chromadb.config", "message": "Starting component SqliteDB"}
+{"timestamp": null, "level": null, "name": "chromadb.config", "message": "Starting component LocalSegmentManager"}
+{"timestamp": null, "level": null, "name": "chromadb.config", "message": "Starting component SegmentAPI"}
+{"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given"}
+{"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given"}
+{"timestamp": null, "level": null, "name": "chromadb.telemetry.product.posthog", "message": "Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given"}

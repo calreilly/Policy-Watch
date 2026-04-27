@@ -48,9 +48,12 @@ async def lifespan(app: FastAPI):
         db.close()
     yield
 
+from fastapi.middleware.gzip import GzipMiddleware
 from middleware.security import SecurityMiddleware
 
 app = FastAPI(title="PolicyWatch API", lifespan=lifespan)
+
+app.add_middleware(GzipMiddleware, minimum_size=1000)
 
 # Middleware execution order is LAST added -> FIRST added
 # We want: CORS (Outer) -> Security (Rate Limit/Headers) -> Metrics -> Router

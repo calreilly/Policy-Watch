@@ -42,3 +42,4 @@ __root__
 2026-04-26 20:27:19,817 - PolicyWatchLoader - ERROR - [SentimentService] Unsupported protocol version 0x304
 2026-04-26 20:29:18,141 - PolicyWatchLoader - ERROR - [SentimentService] Unsupported protocol version 0x304
 2026-04-26 20:38:48,360 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 20:53:08,465 - PolicyWatchLoader - ERROR - [SentimentService] Unsupported protocol version 0x304

@@ -11,10 +11,13 @@ export default function BillCard({ bill, index = 0, onSelect }) {
 
   return (
     <motion.div 
+      layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
       onClick={() => onSelect && onSelect(bill.id)}
+      style={{ willChange: 'transform, opacity' }}
       className="glass-panel p-6 group hover:border-primary/50 relative overflow-hidden flex flex-col cursor-pointer"
     >
       {/* Accent bar */}
