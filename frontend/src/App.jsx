@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, LayoutDashboard, FileText, ChevronRight } from 'lucide-react';
+import { Search, LayoutDashboard, FileText, ChevronRight, Share2 as Network } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import BillSearch from './pages/BillSearch';
 import BriefGenerator from './pages/BriefGenerator';
+import BillComparison from './pages/BillComparison';
 import ChatBot from './components/ChatBot';
 
 export default function App() {
@@ -12,7 +13,8 @@ export default function App() {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'search', label: 'Search Bills', icon: Search },
-    { id: 'brief', label: 'Brief Generator', icon: FileText }
+    { id: 'brief', label: 'Brief Generator', icon: FileText },
+    { id: 'compare', label: 'Bill Comparison', icon: Network }
   ];
 
   return (
@@ -33,22 +35,26 @@ export default function App() {
             </h1>
           </div>
           
-          <nav className="space-y-2">
+          <nav className="space-y-2 relative z-20">
             {navItems.map(item => (
               <button
                 key={item.id}
-                onClick={() => setCurrentPage(item.id)}
-                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 ${
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage(item.id);
+                }}
+                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 cursor-pointer relative z-30 ${
                   currentPage === item.id 
-                    ? 'bg-primary/10 text-primary border border-primary/20 shadow-inner' 
+                    ? 'bg-primary/20 text-white border border-primary/40 shadow-lg shadow-primary/10' 
                     : 'text-textMuted hover:text-white hover:bg-white/5'
                 }`}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 pointer-events-none">
                   <item.icon size={18} className={currentPage === item.id ? 'text-primary' : 'text-textMuted'} />
-                  <span className="font-medium">{item.label}</span>
+                  <span className="font-medium tracking-wide">{item.label}</span>
                 </div>
-                {currentPage === item.id && <ChevronRight size={16} className="opacity-50" />}
+                {currentPage === item.id && <ChevronRight size={16} className="opacity-50 pointer-events-none" />}
               </button>
             ))}
           </nav>
@@ -95,6 +101,7 @@ export default function App() {
             {currentPage === 'dashboard' && <Dashboard />}
             {currentPage === 'search' && <BillSearch />}
             {currentPage === 'brief' && <BriefGenerator />}
+            {currentPage === 'compare' && <BillComparison />}
           </motion.div>
         </AnimatePresence>
         

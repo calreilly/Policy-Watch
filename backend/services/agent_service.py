@@ -1,7 +1,8 @@
 import os
 import time
 import json
-from typing import List, Dict, Any, TypedDict, Literal
+from typing import List, Dict, Any, Optional, Literal
+from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_openai import ChatOpenAI
@@ -11,6 +12,8 @@ import networkx as nx
 from services.congress_service import CongressService
 from services.rag_service import RAGService
 from sqlalchemy.orm import Session
+from core.metrics import record_node_execution, record_node_time, record_token_usage
+from services.cost_tracker import add_token_usage
 
 class BriefState(TypedDict):
     query: str
@@ -52,12 +55,13 @@ class AgentService:
         graph.add_node("graph_analyst", self.graph_analyst_node)        # Week 10: Worker Agent
         graph.add_node("manager_reasoning", self.manager_reasoning_node)# Week 10: Hierarchical Synthesizer
         graph.add_node("generate_brief", self.generate_brief_node)
+        graph.add_node("error_handler", self.error_handler_node)        # New error handling node
         
         # Edges (Dynamic routing to mimic Multi-Agent coordination)
         graph.set_entry_point("guardrail_node")
         graph.add_conditional_edges("guardrail_node", self.check_safety, {
             "safe": "supervisor",
-            "unsafe": END
+            "unsafe": "error_handler"
         })
         
         graph.add_edge("supervisor", "congress_mcp")
@@ -67,6 +71,7 @@ class AgentService:
         graph.add_edge("graph_analyst", "manager_reasoning")
         graph.add_edge("manager_reasoning", "generate_brief")
         graph.add_edge("generate_brief", END)
+        graph.add_edge("error_handler", END)
         
         # Week 11: Compile with checkpointer for Memory
         return graph.compile(checkpointer=self.checkpointer)
@@ -77,11 +82,22 @@ class AgentService:
             raise ValueError("Zero Mock Strictness: API Key missing in backend environment. Please supply a valid OPENAI_API_KEY to execute autonomous networks.")
             
         llm = ChatOpenAI(temperature=0.2, model=model)
-        return llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=prompt)]).content
+        messages = [SystemMessage(content=system_prompt), HumanMessage(content=prompt)]
+        response = llm.invoke(messages)
+        
+        # Record token usage for observability
+        usage = getattr(response, "response_metadata", {}).get("token_usage", {})
+        total_tokens = usage.get("total_tokens", 0)
+        if total_tokens:
+            record_token_usage(model, total_tokens)
+            add_token_usage(model, total_tokens)
+            
+        return response.content
 
     def guardrail_node(self, state: BriefState):
         """Week 14: Safety & Red Teaming Guardrail"""
         start_time = time.time()
+        record_node_execution("guardrail_node")
         # Basic heuristic injection check (simulating LlamaGuard)
         unsafe_keywords = ["ignore previous", "system prompt", "disregard", "you are no longer"]
         is_unsafe = any(hw in state['query'].lower() for hw in unsafe_keywords)
@@ -92,7 +108,9 @@ class AgentService:
         else:
             action_type = "guardrail_passed"
             
-        trace = dict(step=1, action=action_type, details="Input validated against prompt injection payloads", duration_ms=int((time.time() - start_time) * 1000))
+        duration = time.time() - start_time
+        record_node_time("guardrail_node", duration)
+        trace = dict(step=1, action=action_type, details="Input validated against prompt injection payloads", duration_ms=int(duration * 1000))
         return {"pipeline_trace": state.get("pipeline_trace", []) + [trace]}
         
     def check_safety(self, state: BriefState) -> Literal["safe", "unsafe"]:
@@ -103,26 +121,36 @@ class AgentService:
     def supervisor_node(self, state: BriefState):
         """Week 10: Multi-Agent Supervisor that delegates tasks"""
         start_time = time.time()
-        trace = dict(step=2, action="supervisor_delegation", details="Manager Agent decomposing query into worker tasks", duration_ms=int((time.time() - start_time) * 1000))
+        record_node_execution("supervisor")
+        duration = time.time() - start_time
+        record_node_time("supervisor", duration)
+        trace = dict(step=2, action="supervisor_delegation", details="Manager Agent decomposing query into worker tasks", duration_ms=int(duration * 1000))
         return {"pipeline_trace": state.get("pipeline_trace", []) + [trace]}
 
     def congress_mcp_node(self, state: BriefState):
         """Week 8-9: MCP Server Wrapper execution"""
         start_time = time.time()
+        record_node_execution("congress_mcp")
         bills = self.congress.get_local_bills_by_keyword(state["db_session"], state["query"], limit=3)
         bills_found = [{"id": b.id, "title": b.title} for b in bills]
-        trace = dict(step=3, action="mcp_congress_worker", details=f"Congress MCP Tool executed: pulled {len(bills_found)} local schemas", duration_ms=int((time.time() - start_time) * 1000))
+        duration = time.time() - start_time
+        record_node_time("congress_mcp", duration)
+        trace = dict(step=3, action="mcp_congress_worker", details=f"Congress MCP Tool executed: pulled {len(bills_found)} local schemas", duration_ms=int(duration * 1000))
         return {"bills_found": bills_found, "pipeline_trace": state.get("pipeline_trace", []) + [trace]}
 
     def rag_analyst_node(self, state: BriefState):
         start_time = time.time()
+        record_node_execution("rag_analyst")
         rag_results = self.rag.retrieve_relevant_bills(state["query"], top_k=4)
         rag_context = "\\n".join([f"- {r.get('title', 'Unknown')}" for r in rag_results])
-        trace = dict(step=4, action="rag_analyst_worker", details=f"RAG Worker mapped vector similarities", duration_ms=int((time.time() - start_time) * 1000))
+        duration = time.time() - start_time
+        record_node_time("rag_analyst", duration)
+        trace = dict(step=4, action="rag_analyst_worker", details=f"RAG Worker mapped vector similarities", duration_ms=int(duration * 1000))
         return {"rag_context": rag_context, "pipeline_trace": state.get("pipeline_trace", []) + [trace]}
 
     def web_scraper_node(self, state: BriefState):
         start_time = time.time()
+        record_node_execution("web_scraper")
         web_context = ""
         try:
             with DDGS() as ddgs:
@@ -131,30 +159,39 @@ class AgentService:
         except Exception:
             web_context = "No live news retrieved."
             
-        trace = dict(step=5, action="web_scraper_worker", details=f"Scraper Worker queried live search engines", duration_ms=int((time.time() - start_time) * 1000))
+        duration = time.time() - start_time
+        record_node_time("web_scraper", duration)
+        trace = dict(step=5, action="web_scraper_worker", details=f"Scraper Worker queried live search engines", duration_ms=int(duration * 1000))
         return {"web_context": web_context, "pipeline_trace": state.get("pipeline_trace", []) + [trace]}
 
     def graph_analyst_node(self, state: BriefState):
         start_time = time.time()
+        record_node_execution("graph_analyst")
         nodes = list(self.knowledge_graph.nodes())
         edges = list(self.knowledge_graph.edges(data=True))
         graph_context = f"Global Network Associations observed between: {nodes}. Relations: {edges}"
         
-        trace = dict(step=6, action="graph_analyst_worker", details=f"GraphRAG Worker analyzed Neo4j network dependencies", duration_ms=int((time.time() - start_time) * 1000))
+        duration = time.time() - start_time
+        record_node_time("graph_analyst", duration)
+        trace = dict(step=6, action="graph_analyst_worker", details=f"GraphRAG Worker analyzed Neo4j network dependencies", duration_ms=int(duration * 1000))
         return {"graph_context": graph_context, "pipeline_trace": state.get("pipeline_trace", []) + [trace]}
 
     def manager_reasoning_node(self, state: BriefState):
         """Week 10: Manager Reasoning - Synthsizes worker data"""
         start_time = time.time()
+        record_node_execution("manager_reasoning")
         # Week 12: Utilizing "small model strategy" by letting gpt-4o-mini handle the raw processing
         prompt = f"Query: {state['query']}\\n\\nMCP Congress Output: {state['bills_found']}\\nRAG Output: {state['rag_context']}\\nWeb Output: {state['web_context']}\\nGraph Output: {state['graph_context']}\\n\\nPerform a systemic Chain-of-Thought policy analysis aggregating the worker nodes' output."
         reasoning = self._call_llm(prompt, model="gpt-4o-mini")
-        trace = dict(step=7, action="manager_reasoning", details="Manager Agent finalized Chain-of-Thought integration", duration_ms=int((time.time() - start_time) * 1000))
+        duration = time.time() - start_time
+        record_node_time("manager_reasoning", duration)
+        trace = dict(step=7, action="manager_reasoning", details="Manager Agent finalized Chain-of-Thought integration", duration_ms=int(duration * 1000))
         return {"reasoning": reasoning, "pipeline_trace": state.get("pipeline_trace", []) + [trace]}
 
     def generate_brief_node(self, state: BriefState):
         """Final generation and Week 13 Knowledge Distillation checkpoint"""
         start_time = time.time()
+        record_node_execution("generate_brief")
         prompt = f"Based on this compiled reasoning analysis:\\n{state['reasoning']}\\n\\nGenerate an authoritative, complex Markdown policy brief addressing the query: '{state['query']}'"
         
         # Uses standard gpt-4o-mini for efficient inference limits
@@ -164,8 +201,30 @@ class AgentService:
         # Week 13: Knowledge Distillation to Synthetic Logs
         self._export_distillation_log(state['query'], state['reasoning'], brief, trust_score)
         
-        trace = dict(step=8, action="brief_generation", details="Final brief generated & Synthetic log distilled", duration_ms=int((time.time() - start_time) * 1000))
+        duration = time.time() - start_time
+        record_node_time("generate_brief", duration)
+        trace = dict(step=8, action="brief_generation", details="Final brief generated & Synthetic log distilled", duration_ms=int(duration * 1000))
         return {"brief": brief, "trust_score": trust_score, "pipeline_trace": state.get("pipeline_trace", []) + [trace]}
+
+    def error_handler_node(self, state: BriefState):
+        """Handle errors from previous nodes, log them, and trigger fallback RAG analyst."""
+        from services.logging_service import log_error
+        start_time = time.time()
+        # Extract error info from previous node if available
+        last_node = state.get('pipeline_trace', [])[-1] if state.get('pipeline_trace') else {}
+        error_msg = last_node.get('details', 'Unknown error')
+        # Log to persistent error log
+        log_error(error_msg, context='ErrorHandler')
+        # Mark that fallback was used
+        state['used_fallback'] = True
+        trace = dict(
+            step=0,
+            action="error_handler",
+            details=f"Error handled: {error_msg}",
+            duration_ms=int((time.time() - start_time) * 1000),
+        )
+        return {"pipeline_trace": state.get("pipeline_trace", []) + [trace]}
+
 
     def _export_distillation_log(self, query: str, reasoning: str, brief: str, score: float):
         """Week 13: Knowledge Distillation - Export successful cycles as synthetic JSONL data"""

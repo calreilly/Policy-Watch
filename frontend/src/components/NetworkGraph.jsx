@@ -58,7 +58,9 @@ const NetworkGraph = memo(() => {
           }}
           onEngineStop={() => {
               if (graphRef.current) {
-                 graphRef.current.zoomToFit(400, 50);
+                 graphRef.current.zoomToFit(400, 100);
+                 graphRef.current.d3Force('charge').strength(-120);
+                 graphRef.current.d3Force('center').x(600).y(175);
               }
           }}
         />

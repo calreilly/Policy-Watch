@@ -1,0 +1,39 @@
+2026-04-26 13:12:04,027 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 13:14:50,846 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 13:33:20,915 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 13:33:20,932 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 13:35:22,423 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 13:36:12,747 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 13:37:02,336 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 13:38:21,425 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 13:54:45,119 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 13:54:45,138 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 13:54:49,079 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 13:54:53,407 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 14:01:51,581 - PolicyWatchLoader - ERROR - [LiveNewsFeed] RuntimeError: RuntimeError('error sending request for url (https://leta.mullvad.net/search/__data.json?q=US+Congress+legislation+bill+2025&engine=google&x-sveltekit-invalidated=001&country=us&lang=en): client error (Connect)\n\nCaused by:\n    0: client error (Connect)\n    1: dns error: failed to lookup address information: nodename nor servname provided, or not known\n    2: failed to lookup address information: nodename nor servname provided, or not known')
+2026-04-26 14:01:51,721 - PolicyWatchLoader - ERROR - [LiveNewsFeed] RuntimeError: RuntimeError('error sending request for url (https://leta.mullvad.net/search/__data.json?q=US+Congress+legislation+bill+2025&engine=google&x-sveltekit-invalidated=001&country=us&lang=en): client error (Connect)\n\nCaused by:\n    0: client error (Connect)\n    1: dns error: failed to lookup address information: nodename nor servname provided, or not known\n    2: failed to lookup address information: nodename nor servname provided, or not known')
+2026-04-26 14:01:51,733 - PolicyWatchLoader - ERROR - [LiveNewsFeed] RuntimeError: RuntimeError('error sending request for url (https://leta.mullvad.net/search/__data.json?q=US+Congress+legislation+bill+2025&engine=brave&x-sveltekit-invalidated=001&country=us&lang=en): client error (Connect)\n\nCaused by:\n    0: client error (Connect)\n    1: dns error: failed to lookup address information: nodename nor servname provided, or not known\n    2: failed to lookup address information: nodename nor servname provided, or not known')
+2026-04-26 14:01:51,737 - PolicyWatchLoader - ERROR - [LiveNewsFeed] RuntimeError: RuntimeError('error sending request for url (https://leta.mullvad.net/search/__data.json?q=US+Congress+legislation+bill+2025&engine=brave&x-sveltekit-invalidated=001&country=us&lang=en): client error (Connect)\n\nCaused by:\n    0: client error (Connect)\n    1: dns error: failed to lookup address information: nodename nor servname provided, or not known\n    2: failed to lookup address information: nodename nor servname provided, or not known')
+2026-04-26 14:01:51,779 - PolicyWatchLoader - ERROR - [LiveNewsFeed] RuntimeError: RuntimeError('error sending request for url (https://leta.mullvad.net/search/__data.json?q=US+Congress+legislation+bill+2025&engine=google&x-sveltekit-invalidated=001&country=us&lang=en): client error (Connect)\n\nCaused by:\n    0: client error (Connect)\n    1: dns error: failed to lookup address information: nodename nor servname provided, or not known\n    2: failed to lookup address information: nodename nor servname provided, or not known')
+2026-04-26 14:01:51,792 - PolicyWatchLoader - ERROR - [LiveNewsFeed] RuntimeError: RuntimeError('error sending request for url (https://leta.mullvad.net/search/__data.json?q=US+Congress+legislation+bill+2025&engine=brave&x-sveltekit-invalidated=001&country=us&lang=en): client error (Connect)\n\nCaused by:\n    0: client error (Connect)\n    1: dns error: failed to lookup address information: nodename nor servname provided, or not known\n    2: failed to lookup address information: nodename nor servname provided, or not known')
+2026-04-26 14:05:37,901 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 14:09:51,396 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 14:10:56,165 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 14:12:04,670 - PolicyWatchLoader - ERROR - [QuickChat] 1 validation error for ChatOpenAI
+__root__
+  __init__() got an unexpected keyword argument 'proxies' (type=type_error)
+2026-04-26 14:18:34,810 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 15:52:00,341 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 15:52:00,392 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 15:52:05,751 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 15:52:08,993 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 15:52:10,891 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 15:52:13,080 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 15:54:45,225 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 15:59:13,290 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 15:59:21,213 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 16:38:18,107 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 16:39:46,283 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 16:41:01,774 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 16:41:16,716 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304
+2026-04-26 16:49:46,506 - PolicyWatchLoader - ERROR - [LiveNewsFeed] Unsupported protocol version 0x304

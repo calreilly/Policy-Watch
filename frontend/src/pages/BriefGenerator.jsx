@@ -15,6 +15,7 @@ export default function BriefGenerator() {
   const [brief, setBrief] = useState(null);
   const [trace, setTrace] = useState([]);
   const [score, setScore] = useState(0);
+  const [error, setError] = useState(null);
 
   const handleGenerate = async () => {
     if (!query.trim()) return;
@@ -22,15 +23,18 @@ export default function BriefGenerator() {
     setTrace([]);
     setBrief("");
     setScore(0);
+    setError(null);
     
-    // Switch to Native Server-Sent Events (SSE)
+    // Set up Server-Sent Events (SSE) with error handling
     const eventSource = new EventSource(`${API_BASE_URL}/api/agent/stream-brief?query=${encodeURIComponent(query)}`);
-    
+
+    // Reasoning steps
     eventSource.addEventListener('reasoning', (e) => {
         const stepData = JSON.parse(e.data);
         setTrace(prev => [...prev, stepData]);
     });
-    
+
+    // Completion event
     eventSource.addEventListener('complete', (e) => {
         const result = JSON.parse(e.data);
         setBrief(result.brief);
@@ -38,9 +42,25 @@ export default function BriefGenerator() {
         setLoading(false);
         eventSource.close();
     });
-    
+
+    // Custom error events from backend
+    eventSource.addEventListener('error_event', (e) => {
+        try {
+            const err = JSON.parse(e.data);
+            setError(`Agent error: ${err.message}`);
+        } catch {
+            setError('An unknown error occurred during processing.');
+        }
+        setLoading(false);
+        eventSource.close();
+    });
+
+    // Generic network errors / connection loss
     eventSource.onerror = (err) => {
-        console.error("SSE Streaming Error", err);
+        console.error('SSE streaming error', err);
+        if (!error) {
+            setError('Connection lost. Please try again.');
+        }
         setLoading(false);
         eventSource.close();
     };
@@ -83,6 +103,12 @@ export default function BriefGenerator() {
           </div>
         </div>
       </div>
+
+      {error && (
+        <div className="glass-panel p-6 bg-red-500/10 border-red-500/20 text-red-200 text-center animate-in fade-in slide-in-from-top-2">
+          {error}
+        </div>
+      )}
 
       {brief && (
         <motion.div 

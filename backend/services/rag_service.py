@@ -9,7 +9,11 @@ class RAGService:
     COLLECTION_NAME = "bills"
     
     def __init__(self):
-        self.client = chromadb.PersistentClient(path="./chromadb_data")
+        from chromadb.config import Settings
+        self.client = chromadb.PersistentClient(
+            path="./chromadb_data",
+            settings=Settings(anonymized_telemetry=False)
+        )
         self.collection = self.get_or_create_collection()
         self.bm25_index = None
         self.bm25_corpus = []
@@ -65,9 +69,9 @@ class RAGService:
             self.bm25_corpus = bills
             
     def retrieve_relevant_bills(self, query: str, top_k: int = 5) -> List[dict]:
-        """Hybrid Search (Chroma + BM25)"""
+        """Hybrid Search (Chroma + BM25) with optional LLM reranking"""
+        # Initial retrieval from ChromaDB
         retrieved = []
-        
         try:
             results = self.collection.query(
                 query_texts=[query],
@@ -78,7 +82,8 @@ class RAGService:
                     retrieved.append(meta)
         except Exception as e:
             print(f"RAG retrieval error: {e}")
-            
+
+        # BM25 fallback
         if self.bm25_index:
             tokenized_query = query.lower().split()
             bm25_scores = self.bm25_index.get_scores(tokenized_query)
@@ -87,5 +92,23 @@ class RAGService:
                 b = self.bm25_corpus[idx]
                 if not any(r.get("bill_id") == b.id for r in retrieved):
                     retrieved.append({"bill_id": b.id, "title": b.title})
-                    
+
+        # Optional LLM reranking if we have more candidates than needed
+        if len(retrieved) > top_k:
+            try:
+                from langchain_openai import ChatOpenAI
+                from langchain.schema import HumanMessage, SystemMessage
+                docs_list = "\n".join([f"{i+1}. {doc.get('title','')} (ID: {doc.get('bill_id','')})" for i, doc in enumerate(retrieved)])
+                prompt = f"Given the user query: '{query}', rank the following bills in order of relevance. Return a JSON array of bill IDs in the correct order.\n{docs_list}"
+                llm = ChatOpenAI(temperature=0, model="gpt-4o-mini")
+                response = llm.invoke([SystemMessage(content="You are a helpful assistant that ranks policy documents."), HumanMessage(content=prompt)])
+                import json, re
+                match = re.search(r"\[.*\]", response.content, re.DOTALL)
+                if match:
+                    ranked_ids = json.loads(match.group(0))
+                    ranked = [next(d for d in retrieved if d.get('bill_id') == bid) for bid in ranked_ids if any(d.get('bill_id') == bid for d in retrieved)]
+                    retrieved = ranked[:top_k]
+            except Exception as e:
+                print(f"LLM reranking failed: {e}")
+
         return retrieved[:top_k]

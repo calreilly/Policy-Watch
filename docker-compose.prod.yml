@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DATABASE_URL=sqlite:///./policywatch.db
+    volumes:
+      - ./backend/policywatch.db:/app/policywatch.db
+      - ./backend/chromadb_data:/app/chromadb_data
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../Dockerfile.frontend # Assume a standard Nginx/Vite build
+    ports:
+      - "5175:5175"
+    depends_on:
+      - backend
+    restart: always
+
+networks:
+  default:
+    name: policywatch_network
