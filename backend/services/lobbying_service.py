@@ -67,14 +67,15 @@ class LobbyingService:
     def get_mock_influence(candidate_id: str):
         """Fallback simulated data if API is rate-limited or unavailable."""
         import hashlib
+        # Create a deterministic seed based on ID for consistent demo behavior
         seed = int(hashlib.md5(candidate_id.encode()).hexdigest(), 16) % 100
         return {
             "sectors": [
-                {"name": "Technology", "amount": 250000 + (seed * 1000), "companies": ["Meta", "Amazon"]},
-                {"name": "Finance", "amount": 180000 + (seed * 1200), "companies": ["Goldman Sachs", "Citigroup"]},
-                {"name": "Healthcare", "amount": 120000 + (seed * 800), "companies": ["Pfizer", "UnitedHealth"]},
-                {"name": "Law/Lobbying", "amount": 95000 + (seed * 500), "companies": ["Big Law LLC"]},
-                {"name": "Energy", "amount": 45000 + (seed * 300), "companies": ["Exxon", "Shell"]}
+                {"name": "Technology", "amount": 250000 + (seed * 800), "companies": ["Meta", "Amazon"]},
+                {"name": "Finance", "amount": 180000 + (seed * 600), "companies": ["Goldman Sachs", "Citigroup"]},
+                {"name": "Healthcare", "amount": 120000 + (seed * 400), "companies": ["Pfizer", "UnitedHealth"]},
+                {"name": "Law/Lobbying", "amount": 95000 + (seed * 200), "companies": ["Big Law LLC"]},
+                {"name": "Energy", "amount": 45000 + (seed * 100), "companies": ["Exxon", "Shell"]}
             ],
             "top_sector": "Technology"
         }

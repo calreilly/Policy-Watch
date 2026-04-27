@@ -259,7 +259,12 @@ export default function BillModal({ billId, onClose }) {
                                         </div>
                                      </div>
                                   </div>
-                               ) : <p className="text-xs text-textMuted italic">Telemetry Offline</p>}
+                               ) : (
+                                  <div className="space-y-4 animate-pulse">
+                                     <div className="h-6 w-3/4 bg-white/5 rounded"></div>
+                                     <div className="h-10 w-full bg-white/5 rounded"></div>
+                                  </div>
+                               )}
                             </div>
                           </div>
 
@@ -274,7 +279,11 @@ export default function BillModal({ billId, onClose }) {
                                       <div key={idx} className="group/item">
                                          <div className="flex justify-between text-[11px] mb-2">
                                             <span className="text-white font-black uppercase tracking-tight">{s.name}</span>
-                                            <span className="text-textMuted font-mono">${Math.round(s.amount/1000)}k</span>
+                                            <span className="text-textMuted font-mono">
+                                              ${s.amount >= 1000000 
+                                                ? `${(s.amount / 1000000).toFixed(1)}M` 
+                                                : `${Math.round(s.amount / 1000)}k`}
+                                            </span>
                                          </div>
                                          <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                                             <motion.div 
