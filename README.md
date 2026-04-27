@@ -1,66 +1,100 @@
-# PolicyWatch: Agentic Legislative AI Platform
+# PolicyWatch: Legislative Intelligence Platform
 
-PolicyWatch is an advanced, production-ready legislative analysis platform designed to transform raw Congressional data into actionable intelligence. Built with a multi-agent LangGraph orchestrator, it leverages GraphRAG (Neo4j), hybrid vector search (ChromaDB + BM25), and real-time web scraping to provide unprecedented depth into current policy movements.
-
-## 🚀 Key Features
-
-- **Agentic Brief Generator**: A multi-agent pipeline that autonomously researches, synthesizes, and drafts complex policy briefs. Features real-time **SSE (Server-Sent Events) streaming** for transparent execution traces.
-- **RAG Policy Assistant**: A persistent, floating AI chatbot for rapid-fire Q&A against the internal legislative database.
-- **GraphRAG Visualizer**: An interactive 2D context graph mapping relationships between bills and policy domains using Neo4j-style node-link architecture.
-- **Live Legislative Pulse**: Real-time ticker and dashboard feed pulling live data from Congress.gov (v3 API) and the broader web.
-- **Persistent Error Logging**: Centralized error tracking that logs system exceptions to disk for high-reliability auditing.
-
-## 🛠️ Technology Stack
-
-- **Backend**: FastAPI, LangGraph (Multi-Agent Orchestration), SQLAlchemy.
-- **Intelligence**: OpenAI GPT-4o-mini, ChromaDB (Vector Search), BM25 (Keyword Heuristics), NetworkX (Knowledge Graph).
-- **Frontend**: React 18, Vite, Tailwind CSS, Framer Motion, Lucide React.
-- **Deployment**: Docker, Docker Compose.
-
-## 📦 Installation & Setup
-
-### Prerequisites
-- Docker & Docker Compose
-- OpenAI API Key
-
-### Local Development Setup
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/calreilly/Policy-Watch.git
-   cd Policy-Watch
-   ```
-
-2. **Configure Environment**:
-   Create a `.env` file in the `backend/` directory:
-   ```env
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
-
-3. **Orchestrate with Docker**:
-   ```bash
-   docker-compose up --build
-   ```
-   - Frontend will be available at: `http://localhost:5175`
-   - Backend API will be available at: `http://localhost:8001`
-
-## 📊 Architecture
-
-The system utilizes a hierarchical multi-agent structure:
-1. **Supervisor**: Decomposes user queries and delegates to specialized workers.
-2. **Congress MCP**: Extracts structured schemas directly from Congress.gov.
-3. **RAG Analyst**: Performs semantic lookups via ChromaDB.
-4. **Web Scraper**: Scrapes live news and web data via DuckDuckGo.
-5. **Graph Analyst**: Maps relationship dependencies via NetworkX.
-6. **Manager**: Synthesizes all worker outputs into a final Chain-of-Thought brief.
-
-## 📝 Usage
-
-- **Synthesize a Brief**: Navigate to the "Brief Generator," enter a legislative topic (e.g., "AI Regulation in healthcare"), and watch the agents work in real-time.
-- **Chat with Congress**: Use the floating bubble in the bottom right to ask quick questions about specific bills.
-- **Audit Logs**: Access system logs at `http://localhost:8001/api/agent/error-log` for post-testing analysis.
-
-## ⚖️ License
-Distributed under the MIT License. See `LICENSE` for more information.
+**PolicyWatch** is a next-generation, multi-agent legislative tracking and intelligence platform designed for the agentic era. Beyond simple bill tracking, PolicyWatch synthesizes data from multiple federal and state sources, analyzes public sentiment, benchmarks against international standards, and provides deep-box AI impact reports.
 
 ---
-*Created as a GRAD 5900 Capstone Project.*
+
+## 🏛️ System Core Features
+
+### 1. Multi-Agent Data Orchestration
+The platform utilizes a coordinated agentic network to fetch, clean, and synchronize data from:
+*   **Congress.gov (Official)**: Primary source for US Federal legislation.
+*   **GovTrack**: Legislative prognosis and advanced member telemetry.
+*   **Federal Register**: Executive orders and agency-level regulatory actions.
+*   **OpenStates**: State-level legislative tracking.
+
+### 2. Transparency Engine (FEC Integration)
+PolicyWatch maps financial influence directly to legislative action by integrating live **OpenFEC** data.
+*   **Sponsor Financing**: View total funds raised, spent, and cash-on-hand for lead sponsors.
+*   **Transparency Score**: High-visibility financial cards in Every bill modal.
+
+### 3. Automated Regulatory Impact Statement (ARIS)
+An on-demand AI analyst that performs deep-dive fiscal and regulatory risk assessments.
+*   **Mandate Discovery**: Identifies hidden regulatory requirements for the private sector.
+*   **Fiscal Tracking**: Extracts spending authorizations and potential budgetary impacts.
+*   **Beneficiary Analysis**: Pinpoints primary stakeholders and gainers.
+
+### 4. Public Sentiment Pulse
+Real-time monitoring of the public discourse surrounding specific legislation.
+*   **Social Vector Scanning**: Scrapes Reddit, X, and professional policy blogs.
+*   **Sentiment Gauge**: Visualizes public support/opposition with an AI-synthesized "Public Voice" summary.
+
+### 5. Global Policy Benchmarking (International RAG)
+Comparative analysis between US bills and international regulatory standards.
+*   **Cross-Jurisdictional Logic**: Benchmarks AI and Tech legislation against the **EU AI Act**, UN treaties, and OECD guidelines.
+*   **Alignment Score**: Quantitative measure of how closely a US bill aligns with global policy standards.
+
+---
+
+## 🚀 Tech Stack
+
+### Backend
+*   **Framework**: FastAPI (Python 3.9+)
+*   **Vector Database**: ChromaDB (Hybrid RAG: BM25 + Vector Search)
+*   **LLM Orchestration**: OpenAI (`gpt-4o-mini`)
+*   **Database**: SQLAlchemy (SQLite for high-performance edge caching)
+
+### Frontend
+*   **Framework**: React (Vite)
+*   **Styling**: Vanilla CSS with modern Glassmorphism aesthetics.
+*   **Animations**: Framer Motion
+*   **Icons**: Lucide-React
+
+---
+
+## 🛠️ Installation & Setup
+
+### Prerequisites
+*   Node.js (v18+)
+*   Python (3.9+)
+*   OpenAI API Key
+
+### 1. Backend Setup
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env  # Add your API keys here
+python main.py
+```
+
+### 2. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 📊 Evaluation Framework
+PolicyWatch uses a formal evaluation suite to ensure RAG accuracy, tracking metrics such as:
+*   **MRR (Mean Reciprocal Rank)**
+*   **NDCG (Normalized Discounted Cumulative Gain)**
+*   **Pipeline Trace**: Step-by-step latency and action tracking for every agentic cycle.
+
+---
+
+## 🗺️ Roadmap
+*   [x] Multi-Source Integration (Phase 1)
+*   [x] FEC Transparency Engine (Phase 2)
+*   [x] ARIS Impact Analysis (Phase 2)
+*   [x] Social Sentiment Pulse (Phase 2)
+*   [x] Global Policy RAG (Phase 2)
+*   [ ] Predictive Passage Modeling (Phase 3)
+*   [ ] Lobbyist Financial Mapping (Phase 3)
+
+---
+
+Developed for **GRAD5900: Advanced Agentic Coding**.
