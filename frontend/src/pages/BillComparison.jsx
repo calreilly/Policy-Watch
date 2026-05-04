@@ -116,25 +116,75 @@ export default function BillComparison() {
 
                 <div className="prose prose-invert max-w-none space-y-6">
                   {Object.entries(report.comparisons).map(([id, data]) => !data.error && (
-                    <div key={`body-${id}`} className="p-6 bg-[#0d0d14] rounded-2xl border border-white/5 shadow-inner">
-                      <h4 className="text-secondary font-bold text-sm uppercase tracking-widest mb-4">Impact Analysis: {id}</h4>
-                      <div className="text-textMain text-sm leading-relaxed mb-4">
-                        {typeof data.impact?.budgetary_impact === 'object' 
-                          ? JSON.stringify(data.impact.budgetary_impact) 
-                          : String(data.impact?.budgetary_impact || "No budgetary data analyzed.")}
+                    <div key={`body-${id}`} className="p-6 bg-[#0d0d14] rounded-2xl border border-white/5 shadow-inner space-y-4">
+                      <h4 className="text-secondary font-bold text-sm uppercase tracking-widest">Impact Analysis: {id}</h4>
+                      
+                      {/* Budgetary Impact */}
+                      <div>
+                        <p className="text-[10px] uppercase font-bold text-textMuted mb-1 tracking-widest">Budgetary Impact</p>
+                        <p className="text-textMain text-sm leading-relaxed">
+                          {data.impact?.budgetary_impact && data.impact.budgetary_impact !== null
+                            ? (typeof data.impact.budgetary_impact === 'object'
+                              ? Object.values(data.impact.budgetary_impact).join(', ')
+                              : String(data.impact.budgetary_impact))
+                            : "No budgetary implications identified."}
+                        </p>
                       </div>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {(Array.isArray(data.impact?.sectors) ? data.impact.sectors : ["General"]).map(s => (
-                          <span key={String(s)} className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] rounded uppercase font-bold">
-                            {String(s)}
-                          </span>
-                        ))}
+
+                      {/* Sectors */}
+                      <div>
+                        <p className="text-[10px] uppercase font-bold text-textMuted mb-2 tracking-widest">Sectors Impacted</p>
+                        <div className="flex flex-wrap gap-2">
+                          {(Array.isArray(data.impact?.sectors) ? data.impact.sectors : ["General"]).map(s => (
+                            <span key={String(s)} className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] rounded uppercase font-bold">
+                              {String(s)}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                      <p className="text-xs text-textMuted italic">
-                        Risks identified: {typeof data.impact?.risks === 'object' 
-                          ? JSON.stringify(data.impact.risks) 
-                          : String(data.impact?.risks || "Low or unassessed risk profile.")}
-                      </p>
+
+                      {/* Timeline */}
+                      {data.impact?.timeline && (
+                        <div>
+                          <p className="text-[10px] uppercase font-bold text-textMuted mb-1 tracking-widest">Implementation Timeline</p>
+                          <p className="text-textMain text-sm">{String(data.impact.timeline)}</p>
+                        </div>
+                      )}
+
+                      {/* Risks */}
+                      <div>
+                        <p className="text-[10px] uppercase font-bold text-textMuted mb-2 tracking-widest">Identified Risks</p>
+                        {Array.isArray(data.impact?.risks) ? (
+                          <ul className="space-y-1">
+                            {data.impact.risks.map((risk, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-xs text-textMuted">
+                                <span className="text-warning mt-0.5 shrink-0">▸</span>
+                                <span>{String(risk)}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-xs text-textMuted italic">
+                            {data.impact?.risks && data.impact.risks !== null
+                              ? String(data.impact.risks)
+                              : "Low or unassessed risk profile."}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Stakeholders */}
+                      {Array.isArray(data.impact?.stakeholders) && data.impact.stakeholders.length > 0 && (
+                        <div>
+                          <p className="text-[10px] uppercase font-bold text-textMuted mb-2 tracking-widest">Key Stakeholders</p>
+                          <div className="flex flex-wrap gap-2">
+                            {data.impact.stakeholders.map((s, idx) => (
+                              <span key={idx} className="px-2 py-0.5 bg-white/5 text-white/70 text-[10px] rounded border border-white/10">
+                                {String(s)}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
